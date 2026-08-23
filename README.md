@@ -66,7 +66,19 @@ Model çalıştırıldığında `outputs/` klasörü altında aşağıdaki anali
 *(Örnek görselleştirmelerinizi buraya ekleyebilirsiniz)*
 `![Örnek Tahmin Grafiği](outputs/sample_prediction_map.png)`
 
----
+--- ## Modelleme (proje/modelleme/)
+
+İklim/afet verisi ile göç verisi ülke-yıl bazında birleştirilip 6 farklı regresyon 
+modeli (Linear Regression, Ridge, KNN, Decision Tree, Random Forest, Gradient Boosting) 
+denendi. Veri sızıntısını önlemek için zaman bazlı train/test ayrımı kullanıldı 
+(2001-2020 eğitim, 2021-2025 test).
+
+**En iyi model:** Random Forest — R² = 0.72
+
+Detaylı sonuçlar ve raporlar `proje/modelleme/` klasöründe:
+- `modelleme_notebook.ipynb` — çalıştırılabilir kod
+- `model_karsilastirma_notu.docx` — model artı/eksi karşılaştırması
+- `en_iyi2_model_raporu.docx` — en iyi 2 model detaylı analiz
 
 ## 🤝 Katkıda Bulunma (Contributing)
 
