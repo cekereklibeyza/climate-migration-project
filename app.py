@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
-Kuresel Isinma, Asiri Hava Olaylari ve Goc Iliskisi - Streamlit Uygulamasi
-Calistirmak icin:  pip install -r requirements.txt  &&  streamlit run app.py
+Küresel Isınma, Aşırı Hava Olayları ve Göç İlişkisi - Streamlit Uygulaması
+Çalıştırmak için:  pip install -r requirements.txt  &&  streamlit run app.py
 """
 import numpy as np
 import pandas as pd
@@ -18,26 +18,96 @@ from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
 
 try:
     from catboost import CatBoostRegressor
-    CATBOOST_VAR = True
+    CATBOOST_AVAILABLE = True
 except Exception:
-    CATBOOST_VAR = False
+    CATBOOST_AVAILABLE = False
 
 # ============================================================
 # SAYFA AYARLARI
 # ============================================================
 st.set_page_config(
-    page_title="Kuresel Isinma ve Goc",
+    page_title="Küresel Isınma, Aşırı Hava Olayları ve Göç İlişkisi",
     page_icon="\U0001F30D",
     layout="wide",
 )
 
-PRIMARY = "#1F3B57"
-ACCENT = "#2A6F77"
+# ------------------------------------------------------------
+# RENK PALETİ - mavi/turkuaz gradyan temalı
+# ------------------------------------------------------------
+DEEP_BLUE = "#0D2C4F"
+NAVY = "#123C63"
+BLUE = "#1B5E85"
+TEAL = "#1F8A8C"
+MID_TEAL = "#3FA9A0"
+LIGHT_TEAL = "#7FC8BE"
+PALE_TEAL = "#D7EEEA"
+INK = "#1C2B36"
+MUTED = "#5B7280"
+
+BLUE_GRADIENT = [DEEP_BLUE, NAVY, BLUE, TEAL, MID_TEAL, LIGHT_TEAL]
+TEAL_SCALE = "Teal"
+BLUE_SCALE = "Blues"
 
 st.markdown(
-    """
+    f"""
     <style>
-    .metric-card {background-color:#F2F6F5; padding: 14px 18px; border-radius: 10px;}
+    .stApp {{
+        background: linear-gradient(180deg, #F4F9F8 0%, #FFFFFF 45%);
+    }}
+    section[data-testid="stSidebar"] {{
+        background: linear-gradient(200deg, {DEEP_BLUE} 0%, {TEAL} 130%);
+    }}
+    section[data-testid="stSidebar"] * {{
+        color: #F2FBF9 !important;
+    }}
+    section[data-testid="stSidebar"] .stRadio label {{
+        font-size: 0.98rem;
+    }}
+    div[data-testid="stMetric"] {{
+        background: linear-gradient(135deg, {PALE_TEAL} 0%, #FFFFFF 100%);
+        border: 1px solid {LIGHT_TEAL};
+        border-radius: 14px;
+        padding: 14px 16px 8px 16px;
+    }}
+    div[data-testid="stMetricValue"] {{
+        color: {DEEP_BLUE};
+    }}
+    h1, h2, h3 {{
+        color: {DEEP_BLUE};
+    }}
+    .app-hero {{
+        background: linear-gradient(120deg, {DEEP_BLUE} 0%, {TEAL} 100%);
+        padding: 26px 30px;
+        border-radius: 18px;
+        color: #F5FCFB;
+        margin-bottom: 18px;
+    }}
+    .app-hero h1 {{
+        color: #FFFFFF !important;
+        margin-bottom: 6px;
+        font-size: 2.0rem;
+    }}
+    .app-hero p {{
+        color: #E4F4F1;
+        font-size: 1.02rem;
+        margin: 0;
+    }}
+    .note-box {{
+        background: {PALE_TEAL};
+        border-left: 4px solid {TEAL};
+        border-radius: 8px;
+        padding: 12px 16px;
+        color: {INK};
+        font-size: 0.92rem;
+    }}
+    .warn-box {{
+        background: #FDF3E7;
+        border-left: 4px solid #E8A33D;
+        border-radius: 8px;
+        padding: 12px 16px;
+        color: {INK};
+        font-size: 0.92rem;
+    }}
     </style>
     """,
     unsafe_allow_html=True,
@@ -50,22 +120,33 @@ FEATURES = [
 ]
 
 FEATURE_LABELS = {
-    "Yil": "Yil",
-    "Avg_Temp": "Ort. Sicaklik (C)",
-    "Avg_Precip": "Ort. Yagis (mm)",
-    "Afet_Sayisi": "Toplam Afet Sayisi",
-    "Kuraklik_Sayisi": "Kuraklik Sayisi",
-    "Sel_Sayisi": "Sel Sayisi",
-    "Firtina_Sayisi": "Firtina Sayisi",
-    "Asiri_Sicaklik_Sayisi": "Asiri Sicaklik Sayisi",
-    "log_Toplam_Olum": "log(1+Toplam Olum)",
+    "Yil": "Yıl",
+    "Avg_Temp": "Ort. Sıcaklık (°C)",
+    "Avg_Precip": "Ort. Yağış (mm)",
+    "Afet_Sayisi": "Toplam Afet Sayısı",
+    "Kuraklik_Sayisi": "Kuraklık Sayısı",
+    "Sel_Sayisi": "Sel Sayısı",
+    "Firtina_Sayisi": "Fırtına Sayısı",
+    "Asiri_Sicaklik_Sayisi": "Aşırı Sıcaklık Sayısı",
+    "log_Toplam_Olum": "log(1+Toplam Ölüm)",
     "log_Toplam_Etkilenen": "log(1+Toplam Etkilenen)",
     "log_Toplam_Hasar": "log(1+Toplam Hasar, 1000 USD)",
 }
 
+PLOTLY_LAYOUT = dict(
+    font=dict(family="Source Sans Pro, sans-serif", color=INK),
+    plot_bgcolor="rgba(0,0,0,0)",
+    paper_bgcolor="rgba(0,0,0,0)",
+)
+
+
+def style_fig(fig, height=360):
+    fig.update_layout(height=height, margin=dict(l=10, r=10, t=40, b=10), **PLOTLY_LAYOUT)
+    return fig
+
 
 # ============================================================
-# VERI YUKLEME
+# VERİ YÜKLEME
 # ============================================================
 @st.cache_data
 def load_data():
@@ -82,7 +163,7 @@ def spearman(a, b):
 
 
 # ============================================================
-# MODEL EGITIMI (zaman bazli split: <=2020 egitim, >2020 test)
+# MODEL EĞİTİMİ (zaman bazlı split: <=2020 eğitim, >2020 test)
 # ============================================================
 @st.cache_resource
 def train_models(df_hash):
@@ -120,7 +201,7 @@ def train_models(df_hash):
         rows.append({"Model": name, "R2": round(r2, 4), "RMSE_log": round(rmse, 4), "MAE_log": round(mae, 4)})
         fitted[name] = (model, needs_scale)
 
-    if CATBOOST_VAR:
+    if CATBOOST_AVAILABLE:
         cb = CatBoostRegressor(iterations=400, depth=6, learning_rate=0.05, verbose=False, random_state=42)
         cb.fit(Xtr, ytr)
         pred = cb.predict(Xte)
@@ -138,82 +219,93 @@ df = load_data()
 fitted_models, scaler, results_df, Xte, yte, test_df = train_models(len(df))
 
 # ============================================================
-# SIDEBAR - NAVIGASYON
+# SIDEBAR - NAVİGASYON
 # ============================================================
-st.sidebar.title("\U0001F30D Kuresel Isinma & Goc")
-st.sidebar.caption("Dogu-Guney Afrika ve Bati-Orta Afrika (2001-2025)")
+st.sidebar.markdown(
+    "### \U0001F30D Küresel Isınma,\nAşırı Hava Olayları\nve Göç İlişkisi"
+)
+st.sidebar.caption("Doğu-Güney Afrika ve Batı-Orta Afrika (2001-2025)")
 page = st.sidebar.radio(
-    "Sayfa secin",
+    "Sayfa seçin",
     [
-        "Genel Bakis",
+        "Genel Bakış",
         "Veri Gezgini",
         "EDA & Hipotezler",
-        "Modelleme Sonuclari",
-        "Canli Tahmin",
+        "Modelleme Sonuçları",
+        "Canlı Tahmin",
     ],
 )
 st.sidebar.divider()
 st.sidebar.caption(
-    "Bu uygulama, ekibin veri temizleme + birlestirme + hipotez + modelleme "
-    "calismalarinin interaktif ozetidir. Detaylar icin proje raporuna bakiniz."
+    "Bu uygulama, ekibin veri temizleme + birleştirme + hipotez + modelleme "
+    "çalışmalarının interaktif özetidir. Detaylar için proje raporuna bakınız."
 )
 
 # ============================================================
-# SAYFA 1: GENEL BAKIS
+# SAYFA 1: GENEL BAKIŞ
 # ============================================================
-if page == "Genel Bakis":
-    st.title("Kuresel Isinma, Asiri Hava Olaylari ve Goc Iliskisi")
+if page == "Genel Bakış":
     st.markdown(
-        "Bu proje, iklim/afet degiskenlerinin (sicaklik, yagis, kuraklik, sel, firtina, "
-        "asiri sicaklik) **Dogu-Guney Afrika** ve **Bati-Orta Afrika** bolgelerindeki "
-        "**sinir otesi goc** ile iliskisini inceler. Goc, UNHCR'in ulkeler arasi "
-        "iltica/goc verisiyle tanimlanmistir (ulke ici yerinden edilme dahil degildir)."
+        """
+        <div class="app-hero">
+        <h1>Küresel Isınma, Aşırı Hava Olayları ve Göç İlişkisi</h1>
+        <p>İklim/afet değişkenlerinin (sıcaklık, yağış, kuraklık, sel, fırtına, aşırı sıcaklık)
+        <b>Doğu-Güney Afrika</b> ve <b>Batı-Orta Afrika</b> bölgelerindeki <b>sınır ötesi göç</b>
+        ile ilişkisini interaktif olarak keşfedin.</p>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+    st.caption(
+        "Göç, UNHCR'ın ülkeler arası iltica/göç verisiyle tanımlanmıştır "
+        "(ülke içi yerinden edilme dahil değildir)."
     )
 
     c1, c2, c3, c4 = st.columns(4)
-    c1.metric("Ulke sayisi", df["ISO3"].nunique())
-    c2.metric("Yil araligi", f"{df['Yil'].min()}-{df['Yil'].max()}")
-    c3.metric("Toplam kayit", f"{len(df):,}".replace(",", "."))
-    c4.metric("Toplam goc (kumulatif)", f"{int(df['Goc'].sum()):,}".replace(",", "."))
+    c1.metric("Ülke sayısı", df["ISO3"].nunique())
+    c2.metric("Yıl aralığı", f"{df['Yil'].min()}-{df['Yil'].max()}")
+    c3.metric("Toplam kayıt", f"{len(df):,}".replace(",", "."))
+    c4.metric("Toplam göç (kümülatif)", f"{int(df['Goc'].sum()):,}".replace(",", "."))
 
     st.divider()
     col1, col2 = st.columns(2)
     with col1:
-        st.subheader("Yillara gore toplam goc")
+        st.subheader("Yıllara göre toplam göç")
         yearly = df.groupby("Yil", as_index=False)["Goc"].sum()
-        fig = px.area(yearly, x="Yil", y="Goc", color_discrete_sequence=[ACCENT])
-        fig.update_layout(height=350, margin=dict(l=10, r=10, t=10, b=10))
-        st.plotly_chart(fig, use_container_width=True)
+        fig = px.area(yearly, x="Yil", y="Goc", color_discrete_sequence=[TEAL])
+        fig.update_traces(line=dict(color=DEEP_BLUE, width=2), fillcolor="rgba(31,138,140,0.25)")
+        st.plotly_chart(style_fig(fig), use_container_width=True)
     with col2:
-        st.subheader("En cok goc veren 10 ulke (toplam)")
+        st.subheader("En çok göç veren 10 ülke (toplam)")
         top10 = df.groupby("Ulke", as_index=False)["Goc"].sum().sort_values("Goc", ascending=False).head(10)
-        fig = px.bar(top10.sort_values("Goc"), x="Goc", y="Ulke", orientation="h",
-                     color_discrete_sequence=[PRIMARY])
-        fig.update_layout(height=350, margin=dict(l=10, r=10, t=10, b=10))
-        st.plotly_chart(fig, use_container_width=True)
+        top10 = top10.sort_values("Goc")
+        fig = px.bar(top10, x="Goc", y="Ulke", orientation="h", color="Goc",
+                     color_continuous_scale=TEAL_SCALE)
+        fig.update_layout(coloraxis_showscale=False)
+        st.plotly_chart(style_fig(fig), use_container_width=True)
 
     st.divider()
     st.markdown(
-        "**Metodoloji ozeti:** Bilateral goc verisi (43.162 satir) ulke-yil bazinda "
-        "toplanip iklim/afet tablosuyla birlestirilerek 1.190 satirlik nihai veri seti "
-        "olusturulmustur. Hipotez testleri ve iki bagimsiz modelleme calismasi "
+        "**Metodoloji özeti:** Bilateral göç verisi (43.162 satır) ülke-yıl bazında "
+        "toplanıp iklim/afet tablosuyla birleştirilerek 1.190 satırlık nihai veri seti "
+        "oluşturulmuştur. Hipotez testleri ve iki bağımsız modelleme çalışması "
         "(CatBoost/Ridge ve Random Forest/Gradient Boosting/Decision Tree/KNN/Linear) "
-        "bu veri seti uzerinde yurutulmustur."
+        "bu veri seti üzerinde yürütülmüştür."
     )
 
 # ============================================================
-# SAYFA 2: VERI GEZGINI
+# SAYFA 2: VERİ GEZGİNİ
 # ============================================================
 elif page == "Veri Gezgini":
-    st.title("Veri Gezgini")
-    st.caption("Ulke ve yil secerek birlesik veri setini filtreleyin.")
+    st.title("\U0001F50D Veri Gezgini")
+    st.caption("Ülke ve yıl seçerek birleşik veri setini filtreleyin.")
 
     ulkeler = sorted(df["Ulke"].unique())
     col_f1, col_f2 = st.columns([2, 1])
     with col_f1:
-        secili_ulkeler = st.multiselect("Ulke(ler)", ulkeler, default=ulkeler[:5])
+        secili_ulkeler = st.multiselect("Ülke(ler)", ulkeler, default=ulkeler[:5])
     with col_f2:
-        yil_araligi = st.slider("Yil araligi", int(df["Yil"].min()), int(df["Yil"].max()),
+        yil_araligi = st.slider("Yıl aralığı", int(df["Yil"].min()), int(df["Yil"].max()),
                                  (int(df["Yil"].min()), int(df["Yil"].max())))
 
     filtered = df[
@@ -221,7 +313,7 @@ elif page == "Veri Gezgini":
         & (df["Yil"].between(*yil_araligi))
     ]
 
-    st.write(f"**{len(filtered)}** satir goruntuleniyor.")
+    st.write(f"**{len(filtered)}** satır görüntüleniyor.")
     st.dataframe(
         filtered[["Yil", "Ulke", "ISO3", "Avg_Temp", "Avg_Precip", "Kuraklik_Sayisi",
                   "Sel_Sayisi", "Firtina_Sayisi", "Toplam_Etkilenen", "Goc"]],
@@ -231,52 +323,48 @@ elif page == "Veri Gezgini":
     if len(filtered) > 0 and secili_ulkeler:
         col1, col2 = st.columns(2)
         with col1:
-            st.subheader("Goc - zaman serisi")
-            fig = px.line(filtered.sort_values("Yil"), x="Yil", y="Goc", color="Ulke", markers=True)
-            fig.update_layout(height=380, margin=dict(l=10, r=10, t=10, b=10))
-            st.plotly_chart(fig, use_container_width=True)
+            st.subheader("Göç - zaman serisi")
+            fig = px.line(filtered.sort_values("Yil"), x="Yil", y="Goc", color="Ulke",
+                          markers=True, color_discrete_sequence=BLUE_GRADIENT)
+            st.plotly_chart(style_fig(fig, 380), use_container_width=True)
         with col2:
-            st.subheader("Afet sayilari (toplam)")
+            st.subheader("Afet sayıları (toplam)")
             afet_toplam = filtered.groupby("Ulke")[["Kuraklik_Sayisi", "Sel_Sayisi", "Firtina_Sayisi", "Asiri_Sicaklik_Sayisi"]].sum()
-            fig2 = px.bar(afet_toplam, barmode="group")
-            fig2.update_layout(height=380, margin=dict(l=10, r=10, t=10, b=10))
-            st.plotly_chart(fig2, use_container_width=True)
+            fig2 = px.bar(afet_toplam, barmode="group", color_discrete_sequence=BLUE_GRADIENT)
+            st.plotly_chart(style_fig(fig2, 380), use_container_width=True)
 
     csv = filtered.to_csv(index=False).encode("utf-8")
-    st.download_button("Filtrelenmis veriyi CSV indir", csv, "filtrelenmis_veri.csv", "text/csv")
+    st.download_button("Filtrelenmiş veriyi CSV indir", csv, "filtrelenmis_veri.csv", "text/csv")
 
 # ============================================================
-# SAYFA 3: EDA & HIPOTEZLER
+# SAYFA 3: EDA & HİPOTEZLER
 # ============================================================
 elif page == "EDA & Hipotezler":
-    st.title("Kesifsel Veri Analizi ve Hipotezler")
+    st.title("\U0001F4CA Keşifsel Veri Analizi ve Hipotezler")
 
     tab1, tab2 = st.tabs(["EDA", "Hipotez Testleri"])
 
     with tab1:
         col1, col2 = st.columns(2)
         with col1:
-            st.subheader("Goc dagilimi (ham)")
-            fig = px.histogram(df, x="Goc", nbins=40, color_discrete_sequence=["#e07a5f"])
+            st.subheader("Göç dağılımı (ham)")
+            fig = px.histogram(df, x="Goc", nbins=40, color_discrete_sequence=[BLUE])
             skew = df["Goc"].skew()
-            fig.update_layout(height=340, margin=dict(l=10, r=10, t=30, b=10),
-                               title=f"Carpiklik (skewness) = {skew:.2f}")
-            st.plotly_chart(fig, use_container_width=True)
+            fig.update_layout(title=f"Çarpıklık (skewness) = {skew:.2f}")
+            st.plotly_chart(style_fig(fig, 340), use_container_width=True)
         with col2:
-            st.subheader("log(1+Goc) dagilimi")
-            fig = px.histogram(df, x="log_Goc", nbins=40, color_discrete_sequence=[ACCENT])
-            fig.update_layout(height=340, margin=dict(l=10, r=10, t=30, b=10),
-                               title="Log donusumu sonrasi dagilim dengelenir")
-            st.plotly_chart(fig, use_container_width=True)
+            st.subheader("log(1+Göç) dağılımı")
+            fig = px.histogram(df, x="log_Goc", nbins=40, color_discrete_sequence=[TEAL])
+            fig.update_layout(title="Log dönüşümü sonrası dağılım dengelenir")
+            st.plotly_chart(style_fig(fig, 340), use_container_width=True)
 
         st.subheader("Korelasyon matrisi")
         num_cols = ["Avg_Temp", "Avg_Precip", "Afet_Sayisi", "Kuraklik_Sayisi", "Sel_Sayisi",
                     "Firtina_Sayisi", "Asiri_Sicaklik_Sayisi", "Toplam_Olum", "Toplam_Etkilenen",
                     "Toplam_Hasar_1000USD", "Goc"]
         corr = df[num_cols].corr()
-        fig = px.imshow(corr, text_auto=".2f", color_continuous_scale="RdBu_r", zmin=-1, zmax=1, aspect="auto")
-        fig.update_layout(height=520, margin=dict(l=10, r=10, t=10, b=10))
-        st.plotly_chart(fig, use_container_width=True)
+        fig = px.imshow(corr, text_auto=".2f", color_continuous_scale=BLUE_SCALE, zmin=-1, zmax=1, aspect="auto")
+        st.plotly_chart(style_fig(fig, 520), use_container_width=True)
 
     with tab2:
         r_h1 = df["Kuraklik_Sayisi"].corr(df["Goc"])
@@ -299,91 +387,102 @@ elif page == "EDA & Hipotezler":
 
         colA, colB = st.columns(2)
         with colA:
-            st.markdown("#### H1 - Kuraklik arttikca goc artar")
+            st.markdown("#### H1 - Kuraklık arttıkça göç artar")
             st.metric("Pearson r", f"{r_h1:.3f}")
-            st.caption("Iliski cok zayif -> desteklenmedi.")
+            st.markdown('<div class="note-box">İlişki çok zayıf → desteklenmedi.</div>', unsafe_allow_html=True)
 
-            st.markdown("#### H5 - Kuraklik etkisi dolayli (mediation)")
-            st.metric("Kuraklik -> Etkilenen (r)", f"{r_h5a:.3f}")
-            st.metric("Etkilenen -> Goc (r)", f"{r_h5b:.3f}")
-            st.caption("Kuraklik etkilenen nufusu artiriyor ama bu sinir otesi goce zayif yansiyor -> kismi destek (\"hapsolmus nufus\").")
+            st.markdown("#### H5 - Kuraklık etkisi dolaylı (mediation)")
+            st.metric("Kuraklık → Etkilenen (r)", f"{r_h5a:.3f}")
+            st.metric("Etkilenen → Göç (r)", f"{r_h5b:.3f}")
+            st.markdown(
+                '<div class="note-box">Kuraklık etkilenen nüfusu artırıyor ama bu sınır ötesi '
+                'göçe zayıf yansıyor → kısmi destek ("hapsolmuş nüfus").</div>',
+                unsafe_allow_html=True,
+            )
         with colB:
-            st.markdown("#### H7 - Sel, kuraklikdan daha guclu etkiliyor")
-            st.metric("Sel Spearman r", f"{r_sel:.3f}", delta=f"kuraklik: {r_kuraklik:.3f}")
-            st.caption("Sel, kuraklikdan belirgin sekilde daha guclu iliskili -> destekli.")
+            st.markdown("#### H7 - Sel, kuraklıktan daha güçlü etkiliyor")
+            st.metric("Sel Spearman r", f"{r_sel:.3f}", delta=f"kuraklık: {r_kuraklik:.3f}")
+            st.markdown(
+                '<div class="note-box">Sel, kuraklıktan belirgin şekilde daha güçlü ilişkili → destekli.</div>',
+                unsafe_allow_html=True,
+            )
 
-            st.markdown("#### H20 - Coklu model tekliden iyi mi?")
-            fig = go.Figure(go.Bar(x=["Basit (kuraklik)", "Coklu (6 degisken)"], y=[r2_simple, r2_multi],
-                                    marker_color=["#e76f51", "#2a9d8f"]))
-            fig.update_layout(height=260, margin=dict(l=10, r=10, t=10, b=10), yaxis_title="R2")
-            st.plotly_chart(fig, use_container_width=True)
-            st.caption(f"Basit R²={r2_simple:.4f} vs Coklu R²={r2_multi:.4f} -> destekli.")
+            st.markdown("#### H20 - Çoklu model tekliden iyi mi?")
+            fig = go.Figure(go.Bar(
+                x=["Basit (kuraklık)", "Çoklu (6 değişken)"], y=[r2_simple, r2_multi],
+                marker=dict(color=[LIGHT_TEAL, DEEP_BLUE]),
+            ))
+            fig.update_layout(yaxis_title="R²")
+            st.plotly_chart(style_fig(fig, 260), use_container_width=True)
+            st.caption(f"Basit R²={r2_simple:.4f} vs Çoklu R²={r2_multi:.4f} → destekli.")
 
 # ============================================================
-# SAYFA 4: MODELLEME SONUCLARI
+# SAYFA 4: MODELLEME SONUÇLARI
 # ============================================================
-elif page == "Modelleme Sonuclari":
-    st.title("Modelleme Sonuclari")
-    st.caption("Modeller bu sayfa acildiginda 2001-2020 egitim / 2021-2025 test ayrimiyla canli olarak egitilir.")
+elif page == "Modelleme Sonuçları":
+    st.title("\U0001F916 Modelleme Sonuçları")
+    st.caption("Modeller bu sayfa açıldığında 2001-2020 eğitim / 2021-2025 test ayrımıyla canlı olarak eğitilir.")
 
-    st.subheader("Model karsilastirmasi (canli egitim, bu veri seti uzerinde)")
+    st.subheader("Model karşılaştırması (canlı eğitim, bu veri seti üzerinde)")
     st.dataframe(results_df, use_container_width=True, hide_index=True)
 
     fig = px.bar(results_df.sort_values("R2"), x="R2", y="Model", orientation="h",
-                 color="R2", color_continuous_scale="Teal")
-    fig.update_layout(height=380, margin=dict(l=10, r=10, t=10, b=10))
-    st.plotly_chart(fig, use_container_width=True)
+                 color="R2", color_continuous_scale=BLUE_SCALE)
+    fig.update_layout(coloraxis_showscale=False)
+    st.plotly_chart(style_fig(fig, 380), use_container_width=True)
 
     st.divider()
-    st.subheader("Ozellik onemleri (en iyi agac tabanli model)")
+    st.subheader("Özellik önemleri (en iyi ağaç tabanlı model)")
     tree_models = {n: m for n, (m, s) in fitted_models.items() if hasattr(m, "feature_importances_")}
     if tree_models:
-        secim = st.selectbox("Model secin", list(tree_models.keys()))
+        secim = st.selectbox("Model seçin", list(tree_models.keys()))
         model = tree_models[secim]
         importances = pd.Series(model.feature_importances_, index=[FEATURE_LABELS[f] for f in FEATURES]).sort_values()
-        fig = px.bar(importances, orientation="h", color_discrete_sequence=[PRIMARY])
-        fig.update_layout(height=420, margin=dict(l=10, r=10, t=10, b=10), showlegend=False,
-                           xaxis_title="Goreli onem", yaxis_title="")
-        st.plotly_chart(fig, use_container_width=True)
+        fig = px.bar(importances, orientation="h", color=importances.values, color_continuous_scale=TEAL_SCALE)
+        fig.update_layout(showlegend=False, coloraxis_showscale=False, xaxis_title="Göreli önem", yaxis_title="")
+        st.plotly_chart(style_fig(fig, 420), use_container_width=True)
 
     st.divider()
-    st.subheader("Referans: ekibin orijinal calisma sonuclari (rapor)")
+    st.subheader("Referans: ekibin orijinal çalışma sonuçları (rapor)")
     ref = pd.DataFrame({
-        "Model": ["CatBoost (Calisma 1)", "Ridge (Calisma 1)", "Random Forest (Calisma 2)",
-                  "Gradient Boosting (Calisma 2)", "Decision Tree (Calisma 2)", "KNN (Calisma 2)",
-                  "Ridge (Calisma 2)", "Linear (Calisma 2)"],
+        "Model": ["CatBoost (Çalışma 1)", "Ridge (Çalışma 1)", "Random Forest (Çalışma 2)",
+                  "Gradient Boosting (Çalışma 2)", "Decision Tree (Çalışma 2)", "KNN (Çalışma 2)",
+                  "Ridge (Çalışma 2)", "Linear (Çalışma 2)"],
         "R2": [0.560, 0.179, 0.7151, 0.5903, 0.4340, 0.3406, 0.2634, 0.2634],
     })
     st.dataframe(ref, use_container_width=True, hide_index=True)
     st.caption(
-        "Not: Bu sayfadaki 'canli egitim' sonuclari, ayni veri seti ve yontemle "
-        "(zaman bazli split) yeniden egitilen modellerden gelir; referans tablo ise "
-        "ekibin orijinal notebook'larindaki sonuclardir. Kucuk farklar hiperparametre "
-        "ve rastgelelik kaynaklidir."
+        "Not: Bu sayfadaki 'canlı eğitim' sonuçları, aynı veri seti ve yöntemle "
+        "(zaman bazlı split) yeniden eğitilen modellerden gelir; referans tablo ise "
+        "ekibin orijinal notebook'larındaki sonuçlardır. Küçük farklar hiperparametre "
+        "ve rastgelelik kaynaklıdır."
     )
 
 # ============================================================
-# SAYFA 5: CANLI TAHMIN
+# SAYFA 5: CANLI TAHMİN
 # ============================================================
-elif page == "Canli Tahmin":
-    st.title("Canli Goc Tahmini")
-    st.caption("Iklim/afet degerlerini girin, model o ulke-yil icin tahmini goc sayisini hesaplasin.")
+elif page == "Canlı Tahmin":
+    st.title("\U0001F3AF Canlı Göç Tahmini")
+    st.caption("İklim/afet değerlerini girin, model o ülke-yıl için tahmini göç sayısını hesaplasın.")
 
     model_secenekleri = [n for n in fitted_models.keys()]
-    secili_model = st.selectbox("Model", model_secenekleri, index=model_secenekleri.index("Random Forest") if "Random Forest" in model_secenekleri else 0)
+    secili_model = st.selectbox(
+        "Model", model_secenekleri,
+        index=model_secenekleri.index("Random Forest") if "Random Forest" in model_secenekleri else 0,
+    )
 
     col1, col2, col3 = st.columns(3)
     with col1:
-        yil = st.number_input("Yil", min_value=2001, max_value=2035, value=2025)
-        avg_temp = st.slider("Ortalama sicaklik (C)", float(df["Avg_Temp"].min()), float(df["Avg_Temp"].max()), float(df["Avg_Temp"].median()))
-        avg_precip = st.slider("Ortalama yagis (mm)", float(df["Avg_Precip"].min()), float(df["Avg_Precip"].max()), float(df["Avg_Precip"].median()))
+        yil = st.number_input("Yıl", min_value=2001, max_value=2035, value=2025)
+        avg_temp = st.slider("Ortalama sıcaklık (°C)", float(df["Avg_Temp"].min()), float(df["Avg_Temp"].max()), float(df["Avg_Temp"].median()))
+        avg_precip = st.slider("Ortalama yağış (mm)", float(df["Avg_Precip"].min()), float(df["Avg_Precip"].max()), float(df["Avg_Precip"].median()))
     with col2:
-        kuraklik = st.slider("Kuraklik sayisi", 0, int(df["Kuraklik_Sayisi"].max()), 0)
-        sel = st.slider("Sel sayisi", 0, int(df["Sel_Sayisi"].max()), 0)
-        firtina = st.slider("Firtina sayisi", 0, int(df["Firtina_Sayisi"].max()), 0)
-        asiri_sicaklik = st.slider("Asiri sicaklik sayisi", 0, int(df["Asiri_Sicaklik_Sayisi"].max()), 0)
+        kuraklik = st.slider("Kuraklık sayısı", 0, int(df["Kuraklik_Sayisi"].max()), 0)
+        sel = st.slider("Sel sayısı", 0, int(df["Sel_Sayisi"].max()), 0)
+        firtina = st.slider("Fırtına sayısı", 0, int(df["Firtina_Sayisi"].max()), 0)
+        asiri_sicaklik = st.slider("Aşırı sıcaklık sayısı", 0, int(df["Asiri_Sicaklik_Sayisi"].max()), 0)
     with col3:
-        olum = st.number_input("Toplam olum", min_value=0, value=0, step=10)
+        olum = st.number_input("Toplam ölüm", min_value=0, value=0, step=10)
         etkilenen = st.number_input("Toplam etkilenen", min_value=0, value=0, step=1000)
         hasar = st.number_input("Toplam hasar (1000 USD)", min_value=0, value=0, step=1000)
 
@@ -404,19 +503,20 @@ elif page == "Canli Tahmin":
         pred = max(pred, 0)
 
         st.divider()
-        st.metric(f"{secili_model} - Tahmini sinir otesi goc", f"{pred:,.0f} kisi".replace(",", "."))
+        st.metric(f"{secili_model} - Tahmini sınır ötesi göç", f"{pred:,.0f} kişi".replace(",", "."))
 
         ortalama = df["Goc"].mean()
         oran = pred / ortalama if ortalama else 0
         st.caption(
-            f"Bu tahmin, veri setindeki ortalama goc degerinin ({ortalama:,.0f} kisi) "
-            f"yaklasik {oran:.1f} katidir.".replace(",", ".")
+            f"Bu tahmin, veri setindeki ortalama göç değerinin ({ortalama:,.0f} kişi) "
+            f"yaklaşık {oran:.1f} katıdır.".replace(",", ".")
         )
 
     st.divider()
-    st.warning(
-        "Bu arac egitim/gosterim amaclidir. Model, sadece 48 ulke ve 2001-2025 verisiyle "
-        "egitilmistir; sosyoekonomik degiskenler (nufus, GSYIH vb.) icermez ve savas/kriz "
-        "gibi goc uzerinde cok buyuk etkisi olan faktorleri yakalayamaz. Tahminler kesin "
-        "degil, referans amaclidir."
+    st.markdown(
+        '<div class="warn-box">Bu araç eğitim/gösterim amaçlıdır. Model, sadece 48 ülke ve '
+        '2001-2025 verisiyle eğitilmiştir; sosyoekonomik değişkenler (nüfus, GSYİH vb.) '
+        'içermez ve savaş/kriz gibi göç üzerinde çok büyük etkisi olan faktörleri '
+        'yakalayamaz. Tahminler kesin değil, referans amaçlıdır.</div>',
+        unsafe_allow_html=True,
     )
