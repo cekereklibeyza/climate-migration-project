@@ -44,9 +44,35 @@ PALE_TEAL = "#D7EEEA"
 INK = "#1C2B36"
 MUTED = "#5B7280"
 
+ORANGE = "#E8A33D"
+SOFT_ORANGE_BG = "#FCEFDD"
+
 BLUE_GRADIENT = [DEEP_BLUE, NAVY, BLUE, TEAL, MID_TEAL, LIGHT_TEAL]
 TEAL_SCALE = "Teal"
 BLUE_SCALE = "Blues"
+# negatif -> turuncu, sifir -> beyaz, pozitif -> lacivert (diverging skala)
+ORANGE_BLUE_DIVERGING = [
+    [0.0, "#B5651D"],
+    [0.25, "#E8935C"],
+    [0.5, "#FFFFFF"],
+    [0.75, "#5FA8D3"],
+    [1.0, DEEP_BLUE],
+]
+
+TEAM = [
+    ("Beyza Fatıma Çekerekli", "Takım Kaptanı",
+     "Proje sürecinin genel koordinasyonu, iş bölümü ve kalite kontrolü."),
+    ("Dilan Sazan", "Modelleme (CatBoost & Ridge)",
+     "Sınır ötesi göç tahmini için ağaç tabanlı ve doğrusal model karşılaştırması."),
+    ("Esma Nur Beğbağa", "Modelleme (Random Forest / Gradient Boosting / Decision Tree / KNN / Linear)",
+     "Çoklu model karşılaştırması ve zaman bazlı doğrulama."),
+    ("Feyza Nur Demirbaş", "Veri Toplama, Veri Temizleme ve Birleştirme",
+     "Ham göç, iklim ve afet verilerinin derlenmesi, temizlenmesi ve nihai veri setinin oluşturulması."),
+    ("Hilal Üçüncü", "Hipotez Geliştirme",
+     "Literatüre dayalı hipotezlerin belirlenmesi ve test edilecek hipotez setinin tasarımı."),
+    ("Şevval Ok", "Keşifsel Veri Analizi (EDA)",
+     "Veri setinin dağılım, korelasyon ve örüntü analizleriyle keşfedilmesi."),
+]
 
 st.markdown(
     f"""
@@ -102,16 +128,70 @@ st.markdown(
     }}
     .warn-box {{
         background: #FDF3E7;
-        border-left: 4px solid #E8A33D;
+        border-left: 4px solid {ORANGE};
         border-radius: 8px;
         padding: 12px 16px;
         color: {INK};
         font-size: 0.92rem;
     }}
+    .team-card {{
+        background: linear-gradient(135deg, #FFFFFF 0%, {PALE_TEAL} 130%);
+        border: 1px solid {LIGHT_TEAL};
+        border-radius: 14px;
+        padding: 14px 18px;
+        margin-bottom: 10px;
+    }}
+    .team-card .name {{
+        font-weight: 700;
+        color: {DEEP_BLUE};
+        font-size: 1.02rem;
+    }}
+    .team-card .role {{
+        font-weight: 600;
+        color: {TEAL};
+        font-size: 0.88rem;
+        margin-bottom: 4px;
+    }}
+    .team-card .desc {{
+        color: {MUTED};
+        font-size: 0.86rem;
+    }}
+    table.soft-table {{
+        border-collapse: collapse;
+        width: 100%;
+        font-size: 0.86rem;
+    }}
+    table.soft-table thead th {{
+        background: {SOFT_ORANGE_BG} !important;
+        color: {INK} !important;
+        border-bottom: 2px solid {ORANGE};
+        padding: 8px 10px;
+        text-align: left;
+        position: sticky;
+        top: 0;
+    }}
+    table.soft-table tbody td {{
+        padding: 6px 10px;
+        border-bottom: 1px solid #EEE;
+    }}
+    table.soft-table tbody tr:nth-child(even) {{
+        background: #FAFCFC;
+    }}
+    .soft-table-wrap {{
+        max-height: 340px;
+        overflow-y: auto;
+        border: 1px solid {LIGHT_TEAL};
+        border-radius: 10px;
+    }}
     </style>
     """,
     unsafe_allow_html=True,
 )
+
+
+def render_soft_table(dataframe):
+    html = dataframe.to_html(index=False, classes="soft-table", border=0)
+    st.markdown(f'<div class="soft-table-wrap">{html}</div>', unsafe_allow_html=True)
 
 FEATURES = [
     "Yil", "Avg_Temp", "Avg_Precip", "Afet_Sayisi", "Kuraklik_Sayisi",
@@ -293,6 +373,22 @@ if page == "Genel Bakış":
         "bu veri seti üzerinde yürütülmüştür."
     )
 
+    st.divider()
+    st.subheader("\U0001F465 Proje Ekibi")
+    team_cols = st.columns(3)
+    for i, (isim, gorev, aciklama) in enumerate(TEAM):
+        with team_cols[i % 3]:
+            st.markdown(
+                f"""
+                <div class="team-card">
+                    <div class="name">{isim}</div>
+                    <div class="role">{gorev}</div>
+                    <div class="desc">{aciklama}</div>
+                </div>
+                """,
+                unsafe_allow_html=True,
+            )
+
 # ============================================================
 # SAYFA 2: VERİ GEZGİNİ
 # ============================================================
@@ -314,10 +410,9 @@ elif page == "Veri Gezgini":
     ]
 
     st.write(f"**{len(filtered)}** satır görüntüleniyor.")
-    st.dataframe(
+    render_soft_table(
         filtered[["Yil", "Ulke", "ISO3", "Avg_Temp", "Avg_Precip", "Kuraklik_Sayisi",
-                  "Sel_Sayisi", "Firtina_Sayisi", "Toplam_Etkilenen", "Goc"]],
-        use_container_width=True, height=320,
+                  "Sel_Sayisi", "Firtina_Sayisi", "Toplam_Etkilenen", "Goc"]]
     )
 
     if len(filtered) > 0 and secili_ulkeler:
@@ -363,7 +458,7 @@ elif page == "EDA & Hipotezler":
                     "Firtina_Sayisi", "Asiri_Sicaklik_Sayisi", "Toplam_Olum", "Toplam_Etkilenen",
                     "Toplam_Hasar_1000USD", "Goc"]
         corr = df[num_cols].corr()
-        fig = px.imshow(corr, text_auto=".2f", color_continuous_scale=BLUE_SCALE, zmin=-1, zmax=1, aspect="auto")
+        fig = px.imshow(corr, text_auto=".2f", color_continuous_scale=ORANGE_BLUE_DIVERGING, zmin=-1, zmax=1, aspect="auto")
         st.plotly_chart(style_fig(fig, 520), use_container_width=True)
 
     with tab2:
