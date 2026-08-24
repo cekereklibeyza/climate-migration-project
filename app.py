@@ -60,7 +60,7 @@ ORANGE_BLUE_DIVERGING = [
 ]
 
 TEAM = [
-    ("Beyza Fatıma Çekerekli", "Takım Lideri",
+    ("Beyza Fatıma Çekerekli", "Takım Kaptanı",
      "Proje kapsamının ve veri/analiz kararlarının belirlenmesi, tüm ekip çıktılarının "
      "tutarlılık kontrolü, literatür taramasına katkı, nihai rapor ve uygulamanın koordinasyonu."),
     ("Dilan Sazan", "Modelleme (CatBoost & Ridge)",
@@ -330,6 +330,7 @@ page = st.sidebar.radio(
         "EDA & Hipotezler",
         "Modelleme Sonuçları",
         "Canlı Tahmin",
+        "Proje Ekibi",
     ],
 )
 st.sidebar.divider()
@@ -389,20 +390,6 @@ if page == "Genel Bakış":
         "(CatBoost/Ridge ve Random Forest/Gradient Boosting/Decision Tree/KNN/Linear) "
         "bu veri seti üzerinde yürütülmüştür."
     )
-
-    st.divider()
-    st.subheader("\U0001F465 Proje Ekibi")
-    for isim, gorev, aciklama in TEAM:
-        st.markdown(
-            f"""
-            <div class="team-card">
-                <div class="name">{isim}</div>
-                <div class="role">{gorev}</div>
-                <div class="desc">{aciklama}</div>
-            </div>
-            """,
-            unsafe_allow_html=True,
-        )
 
 # ============================================================
 # SAYFA 2: VERİ GEZGİNİ
@@ -622,6 +609,34 @@ elif page == "Canlı Tahmin":
             f"yaklaşık {oran:.1f} katıdır.".replace(",", ".")
         )
 
+        st.divider()
+        st.subheader("\U0001F4CF Model Kıyası")
+        st.caption("Aynı girdi değerleri için tüm modellerin tahminleri.")
+
+        kiyas_satirlari = []
+        for isim, (m, needs_scale_i) in fitted_models.items():
+            Xi = scaler.transform(girdi) if needs_scale_i else girdi
+            p_log = m.predict(Xi)[0]
+            p = max(np.expm1(p_log), 0)
+            kiyas_satirlari.append({"Model": isim, "Tahmini Göç": p})
+
+        kiyas_df = pd.DataFrame(kiyas_satirlari).sort_values("Tahmini Göç", ascending=True)
+        renkler = [ORANGE if m == secili_model else BLUE for m in kiyas_df["Model"]]
+
+        fig = go.Figure(go.Bar(
+            x=kiyas_df["Tahmini Göç"], y=kiyas_df["Model"], orientation="h",
+            marker=dict(color=renkler),
+            text=[f"{v:,.0f}".replace(",", ".") for v in kiyas_df["Tahmini Göç"]],
+            textposition="outside",
+        ))
+        fig.update_layout(xaxis_title="Tahmini Göç (kişi)", yaxis_title="")
+        st.plotly_chart(style_fig(fig, 340), use_container_width=True)
+        st.caption(
+            f"Turuncu çubuk seçtiğin modeli ({secili_model}) gösterir. Modeller arası "
+            "farklar, veri ilişkisinin doğrusal olmayan yapısından ve modellerin farklı "
+            "öğrenme mantığından kaynaklanır (bkz. Modelleme Sonuçları sayfası)."
+        )
+
     st.divider()
     st.markdown(
         '<div class="warn-box">Bu araç eğitim/gösterim amaçlıdır. Model, sadece 48 ülke ve '
@@ -630,3 +645,28 @@ elif page == "Canlı Tahmin":
         'yakalayamaz. Tahminler kesin değil, referans amaçlıdır.</div>',
         unsafe_allow_html=True,
     )
+
+# ============================================================
+# SAYFA 6: PROJE EKİBİ
+# ============================================================
+elif page == "Proje Ekibi":
+    st.markdown(
+        """
+        <div class="app-hero">
+        <h1>\U0001F465 Proje Ekibi</h1>
+        <p>Bu projeyi birlikte hazırlayan 6 kişilik ekip ve görev dağılımı.</p>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+    for isim, gorev, aciklama in TEAM:
+        st.markdown(
+            f"""
+            <div class="team-card">
+                <div class="name">{isim}</div>
+                <div class="role">{gorev}</div>
+                <div class="desc">{aciklama}</div>
+            </div>
+            """,
+            unsafe_allow_html=True,
+        )
