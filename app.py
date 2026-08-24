@@ -60,7 +60,7 @@ ORANGE_BLUE_DIVERGING = [
 ]
 
 TEAM = [
-    ("Beyza Fatıma Çekerekli", "Takım Kaptanı",
+    ("Beyza Fatıma Çekerekli", "Takım Lideri",
      "Proje kapsamının ve veri/analiz kararlarının belirlenmesi, tüm ekip çıktılarının "
      "tutarlılık kontrolü, literatür taramasına katkı, nihai rapor ve uygulamanın koordinasyonu."),
     ("Dilan Sazan", "Modelleme (CatBoost & Ridge)",
