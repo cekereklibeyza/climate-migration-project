@@ -61,17 +61,21 @@ ORANGE_BLUE_DIVERGING = [
 
 TEAM = [
     ("Beyza Fatıma Çekerekli", "Takım Kaptanı",
-     "Proje sürecinin genel koordinasyonu, iş bölümü ve kalite kontrolü."),
+     "Proje kapsamının ve veri/analiz kararlarının belirlenmesi, tüm ekip çıktılarının "
+     "tutarlılık kontrolü, literatür taramasına katkı, nihai rapor ve uygulamanın koordinasyonu."),
     ("Dilan Sazan", "Modelleme (CatBoost & Ridge)",
-     "Sınır ötesi göç tahmini için ağaç tabanlı ve doğrusal model karşılaştırması."),
+     "Sınır ötesi göç tahmini için ağaç tabanlı ve doğrusal model karşılaştırması; "
+     "veri taraması, birleştirme ve literatür taramasına katkı sağladı."),
     ("Esma Nur Beğbağa", "Modelleme (Random Forest / Gradient Boosting / Decision Tree / KNN / Linear)",
-     "Çoklu model karşılaştırması ve zaman bazlı doğrulama."),
+     "Çoklu model karşılaştırması ve zaman bazlı doğrulama; veri taramasına katkı sağladı."),
     ("Feyza Nur Demirbaş", "Veri Toplama, Veri Temizleme ve Birleştirme",
      "Ham göç, iklim ve afet verilerinin derlenmesi, temizlenmesi ve nihai veri setinin oluşturulması."),
     ("Hilal Üçüncü", "Hipotez Geliştirme",
-     "Literatüre dayalı hipotezlerin belirlenmesi ve test edilecek hipotez setinin tasarımı."),
+     "Literatüre dayalı hipotezlerin belirlenmesi ve test edilecek hipotez setinin tasarımı; "
+     "literatür taramasına katkı sağladı."),
     ("Şevval Ok", "Keşifsel Veri Analizi (EDA)",
-     "Veri setinin dağılım, korelasyon ve örüntü analizleriyle keşfedilmesi."),
+     "Veri setinin dağılım, korelasyon ve örüntü analizleriyle keşfedilmesi; "
+     "veri taramasına katkı sağladı."),
 ]
 
 st.markdown(
@@ -138,8 +142,12 @@ st.markdown(
         background: linear-gradient(135deg, #FFFFFF 0%, {PALE_TEAL} 130%);
         border: 1px solid {LIGHT_TEAL};
         border-radius: 14px;
-        padding: 14px 18px;
+        padding: 14px 20px;
         margin-bottom: 10px;
+        min-height: 96px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
     }}
     .team-card .name {{
         font-weight: 700;
@@ -155,6 +163,7 @@ st.markdown(
     .team-card .desc {{
         color: {MUTED};
         font-size: 0.86rem;
+        line-height: 1.35;
     }}
     table.soft-table {{
         border-collapse: collapse;
@@ -182,6 +191,13 @@ st.markdown(
         overflow-y: auto;
         border: 1px solid {LIGHT_TEAL};
         border-radius: 10px;
+    }}
+    .sidebar-title {{
+        font-size: 1.18rem;
+        font-weight: 700;
+        line-height: 1.4;
+        color: #F2FBF9;
+        margin-bottom: 2px;
     }}
     </style>
     """,
@@ -302,7 +318,8 @@ fitted_models, scaler, results_df, Xte, yte, test_df = train_models(len(df))
 # SIDEBAR - NAVİGASYON
 # ============================================================
 st.sidebar.markdown(
-    "### \U0001F30D Küresel Isınma,\nAşırı Hava Olayları\nve Göç İlişkisi"
+    '<div class="sidebar-title">\U0001F30D Küresel Isınma, Aşırı Hava Olayları ve Göç İlişkisi</div>',
+    unsafe_allow_html=True,
 )
 st.sidebar.caption("Doğu-Güney Afrika ve Batı-Orta Afrika (2001-2025)")
 page = st.sidebar.radio(
@@ -375,19 +392,17 @@ if page == "Genel Bakış":
 
     st.divider()
     st.subheader("\U0001F465 Proje Ekibi")
-    team_cols = st.columns(3)
-    for i, (isim, gorev, aciklama) in enumerate(TEAM):
-        with team_cols[i % 3]:
-            st.markdown(
-                f"""
-                <div class="team-card">
-                    <div class="name">{isim}</div>
-                    <div class="role">{gorev}</div>
-                    <div class="desc">{aciklama}</div>
-                </div>
-                """,
-                unsafe_allow_html=True,
-            )
+    for isim, gorev, aciklama in TEAM:
+        st.markdown(
+            f"""
+            <div class="team-card">
+                <div class="name">{isim}</div>
+                <div class="role">{gorev}</div>
+                <div class="desc">{aciklama}</div>
+            </div>
+            """,
+            unsafe_allow_html=True,
+        )
 
 # ============================================================
 # SAYFA 2: VERİ GEZGİNİ
