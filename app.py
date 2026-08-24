@@ -654,7 +654,6 @@ elif page == "Proje Ekibi":
         """
         <div class="app-hero">
         <h1>\U0001F465 Proje Ekibi</h1>
-        <p>Bu projeyi birlikte hazırlayan 6 kişilik ekip ve görev dağılımı.</p>
         </div>
         """,
         unsafe_allow_html=True,
