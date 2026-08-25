@@ -199,6 +199,30 @@ st.markdown(
         color: #F2FBF9;
         margin-bottom: 2px;
     }}
+    .finding-box {{
+        background: linear-gradient(135deg, {PALE_TEAL} 0%, #FFFFFF 100%);
+        border: 1px solid {LIGHT_TEAL};
+        border-left: 5px solid {TEAL};
+        border-radius: 14px;
+        padding: 18px 22px;
+        margin-bottom: 18px;
+    }}
+    .finding-box .finding-title {{
+        font-weight: 700;
+        color: {DEEP_BLUE};
+        font-size: 1.05rem;
+        margin-bottom: 8px;
+    }}
+    .finding-box ul {{
+        margin: 0;
+        padding-left: 20px;
+    }}
+    .finding-box li {{
+        color: {INK};
+        font-size: 0.92rem;
+        margin-bottom: 6px;
+        line-height: 1.45;
+    }}
     </style>
     """,
     unsafe_allow_html=True,
@@ -312,7 +336,8 @@ def train_models(df_hash):
 
 
 df = load_data()
-fitted_models, scaler, results_df, Xte, yte, test_df = train_models(len(df))
+with st.spinner("Modeller eğitiliyor..."):
+    fitted_models, scaler, results_df, Xte, yte, test_df = train_models(len(df))
 
 # ============================================================
 # SIDEBAR - NAVİGASYON
@@ -330,6 +355,7 @@ page = st.sidebar.radio(
         "EDA & Hipotezler",
         "Modelleme Sonuçları",
         "Canlı Tahmin",
+        "Sonuç ve Öneriler",
         "Proje Ekibi",
     ],
 )
@@ -357,6 +383,29 @@ if page == "Genel Bakış":
     st.caption(
         "Göç, UNHCR'ın ülkeler arası iltica/göç verisiyle tanımlanmıştır "
         "(ülke içi yerinden edilme dahil değildir)."
+    )
+
+    st.markdown(
+        """
+        <div class="finding-box">
+        <div class="finding-title">\U0001F4CC Öne Çıkan Bulgular</div>
+        <ul>
+            <li><b>Sel, kuraklıktan daha güçlü bir göç belirleyicisi:</b> Sel sayısı ile göç
+            arasındaki ilişki (Spearman r ≈ 0.33), kuraklığın ilişkisinden (r ≈ 0.01) belirgin
+            şekilde daha güçlü.</li>
+            <li><b>Kuraklığın etkisi dolaylı:</b> Kuraklık göçü doğrudan artırmıyor, etkilenen
+            nüfusu artırıyor; bu da sınır ötesi göçe ancak zayıf biçimde yansıyor
+            ("hapsolmuş nüfus" etkisi).</li>
+            <li><b>Çok değişkenli model, tek değişkenliden çok daha güçlü:</b> Sadece kuraklıkla
+            açıklanan varyans ~%0 iken, 6 iklim/afet değişkeninin birlikte kullanılması açıklama
+            gücünü ~%18'e çıkarıyor.</li>
+            <li><b>En iyi modeller göçü yüksek doğrulukla tahmin ediyor:</b> Random Forest ve
+            CatBoost gibi ağaç tabanlı modeller, test setinde R² = 0.56-0.72 arası performans
+            gösteriyor.</li>
+        </ul>
+        </div>
+        """,
+        unsafe_allow_html=True,
     )
 
     c1, c2, c3, c4 = st.columns(4)
@@ -647,13 +696,81 @@ elif page == "Canlı Tahmin":
     )
 
 # ============================================================
-# SAYFA 6: PROJE EKİBİ
+# SAYFA 6: SONUÇ VE ÖNERİLER
+# ============================================================
+elif page == "Sonuç ve Öneriler":
+    st.markdown(
+        """
+        <div class="app-hero">
+        <h1>\U0001F4CB Sonuç ve Öneriler</h1>
+        <p>Hipotez ve modelleme bulgularının özeti, pratik öneriler ve veri kaynakları.</p>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+
+    st.subheader("Hipotez Sonuçları Özeti")
+    hipotez_ozet = pd.DataFrame({
+        "Hipotez": [
+            "H1 - Kuraklık arttıkça göç artar",
+            "H5 - Kuraklığın etkisi dolaylı (mediation)",
+            "H7 - Sel, kuraklıktan daha güçlü etkiliyor",
+            "H20 - Çok değişkenli model tekliden iyi tahmin eder",
+        ],
+        "Sonuç": ["Desteklenmedi", "Kısmi destek", "Destekli", "Destekli"],
+    })
+    render_soft_table(hipotez_ozet)
+
+    st.divider()
+    st.subheader("Modelleme Özeti")
+    st.markdown(
+        "İki bağımsız modelleme çalışması, göç değişkeninin iklim/afet değişkenleriyle "
+        "**kısmen** açıklanabildiğini, ama tek başına yeterli olmadığını gösteriyor. En iyi "
+        "performansı ağaç tabanlı modeller veriyor (Random Forest R² = 0.72, CatBoost R² = "
+        "0.56); doğrusal modeller (Linear/Ridge, R² ≈ 0.18-0.26) ilişkinin doğrusal olmayan "
+        "yapısını yeterince yakalayamıyor."
+    )
+
+    st.divider()
+    st.subheader("Öneriler")
+    st.markdown(
+        """
+        <div class="note-box">
+        <b>1. Sosyoekonomik değişkenler eklenmeli:</b> Nüfus, GSYİH, yönetişim endeksleri gibi
+        değişkenlerin dahil edilmesi model açıklama gücünü artırabilir.<br><br>
+        <b>2. Sel odaklı erken uyarı sistemlerine öncelik verilmeli:</b> Sel, kuraklıktan daha
+        güçlü bir göç tetikleyicisi olarak öne çıkıyor.<br><br>
+        <b>3. "Hapsolmuş nüfus" (trapped population) etkisi izlenmeli:</b> Kuraklığın göçü
+        azaltıcı bir etkisi olabileceğinden, sadece göç sayılarına bakmak yetersiz kalabilir;
+        yerinden edilme (IDP) verisiyle birlikte değerlendirilmeli.<br><br>
+        <b>4. İç göç (IDP) ayrı bir çalışma konusu olarak ele alınmalı:</b> Bu proje yalnızca
+        sınır ötesi göçe odaklandı; iç yerinden edilme dinamikleri farklı sonuçlar verebilir.
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+
+    st.divider()
+    st.subheader("\U0001F4DA Kaynakça / Veri Kaynakları")
+    st.markdown(
+        "- **Göç verisi:** UNHCR (United Nations High Commissioner for Refugees) - ülkeler "
+        "arası (bilateral) iltica/göç istatistikleri, 2001-2025.\n"
+        "- **Afet verisi:** EM-DAT - The International Disaster Database (CRED) - kuraklık, "
+        "sel, fırtına ve aşırı sıcaklık olayları.\n"
+        "- **İklim verisi:** Ülke-yıl bazında ortalama sıcaklık ve yağış kayıtları.\n"
+        "- Literatür taramasında kullanılan akademik/kurumsal kaynakların tam listesi proje "
+        "raporunun Kaynakça bölümünde yer almaktadır."
+    )
+
+# ============================================================
+# SAYFA 7: PROJE EKİBİ
 # ============================================================
 elif page == "Proje Ekibi":
     st.markdown(
         """
         <div class="app-hero">
         <h1>\U0001F465 Proje Ekibi</h1>
+        <p>Bu projeyi birlikte hazırlayan 6 kişilik ekip ve görev dağılımı.</p>
         </div>
         """,
         unsafe_allow_html=True,
