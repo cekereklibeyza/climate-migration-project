@@ -385,7 +385,7 @@ page = st.sidebar.radio(
 st.sidebar.divider()
 st.sidebar.caption(
     "Bu uygulama, ekibin veri temizleme + birleştirme + hipotez + modelleme "
-    "çalışmalarının interaktif özetidir. Detaylar için proje raporuna bakınız."
+    "çalışmalarının interaktif özetidir."
 )
 
 # ============================================================
@@ -406,7 +406,7 @@ if page == "Genel Bakış":
         unsafe_allow_html=True,
     )
     st.caption(
-        "Göç, UNHCR'ın ülkeler arası iltica/göç verisiyle tanımlanmıştır "
+        "Göç, UNHCR'ın ülkeler arası göç verisiyle tanımlanmıştır "
         "(ülke içi yerinden edilme dahil değildir)."
     )
 
@@ -449,7 +449,7 @@ if page == "Genel Bakış":
     st.markdown(
         """
         <div class="intro-box">
-        <div class="intro-title">Bölge Seçimi — Hangi Bölgeleri, Neden Seçtik?</div>
+        <div class="intro-title">Bölge Seçimi</div>
         <p>UNHCR verisinde 6 farklı bölge bulunuyor: Asya-Pasifik, Amerika, Avrupa,
         Ortadoğu-Kuzey Afrika, Doğu-Güney Afrika ve Batı-Orta Afrika. Biz analizimizi
         <b>Doğu-Güney Afrika</b> ve <b>Batı-Orta Afrika</b> ile sınırlandırdık; çünkü bu iki
@@ -465,7 +465,7 @@ if page == "Genel Bakış":
     st.markdown(
         """
         <div class="intro-box">
-        <div class="intro-title">Veri Kaynakları — Verileri Nereden Aldık, Neden?</div>
+        <div class="intro-title">Veri Kaynakları</div>
         <p>Göç verisi UNHCR'ın yayınladığı ülkeler arası (bilateral) iltica/göç
         istatistiklerinden alındı; çünkü projemiz göçü sınır ötesi hareket olarak
         tanımlıyor, ülke içi yerinden edilmeyi (IDP) kapsam dışında bırakıyor. Afet verisi
@@ -480,7 +480,7 @@ if page == "Genel Bakış":
     st.markdown(
         """
         <div class="intro-box">
-        <div class="intro-title">Modelleme Yaklaşımı — Hangi Modelleri Kullandık, Neden?</div>
+        <div class="intro-title">Modelleme Yaklaşımı</div>
         <p>Ekibimiz iki bağımsız modelleme çalışması yürüttü: birincisinde <b>CatBoost</b> ve
         <b>Ridge Regression</b>, ikincisinde <b>Random Forest</b>, <b>Gradient Boosting</b>,
         <b>Decision Tree</b>, <b>KNN</b>, <b>Ridge</b> ve <b>Linear Regression</b>
