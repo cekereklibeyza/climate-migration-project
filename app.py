@@ -485,10 +485,12 @@ if page == "Genel Bakış":
         <b>Ridge Regression</b>, ikincisinde <b>Random Forest</b>, <b>Gradient Boosting</b>,
         <b>Decision Tree</b>, <b>KNN</b>, <b>Ridge</b> ve <b>Linear Regression</b>
         karşılaştırıldı. Amacımız, farklı model ailelerinin aynı veride tutarlı sonuç verip
-        vermediğini görmekti. Derin öğrenme (sinir ağları) gibi daha karmaşık yöntemleri,
-        veri setimizin görece küçük olması (1.190 satır) nedeniyle bilinçli olarak
-        kullanmadık; bu ölçekte klasik makine öğrenmesi modelleri daha güvenilir sonuç
-        veriyor.</p>
+        vermediğini görmekti. Her iki çalışmada da ağaç tabanlı modeller doğrusal modelleri
+        açık farkla geçti; bu, iklim/afet değişkenleri ile göç arasındaki ilişkinin doğrusal
+        olmadığını, eşik değerler ve değişken etkileşimleri içerdiğini gösteriyor. Ayrıca
+        ekipten bir arkadaşımız IDMC (iç yerinden edilme) verisiyle ayrı bir keşif çalışması
+        yaptı; bu, projenin sınır ötesi göç tanımı dışında kaldığı için ana bulgulara değil,
+        tamamlayıcı bir çalışma olarak rapora dahil edildi.</p>
         </div>
         """,
         unsafe_allow_html=True,
