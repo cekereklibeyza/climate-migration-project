@@ -102,6 +102,9 @@ st.markdown(
     div[data-testid="stMetricValue"] {{
         color: {DEEP_BLUE};
     }}
+    div[data-testid="stImage"] {{
+        margin-bottom: 16px;
+    }}
     h1, h2, h3 {{
         color: {DEEP_BLUE};
     }}
@@ -392,7 +395,7 @@ if page == "Genel Bakış":
     st.image("assets/logo_softito.png", width=110)
     st.markdown(
         """
-        <div class="app-hero" style="margin-top:-8px;">
+        <div class="app-hero">
         <h1>Küresel Isınma, Aşırı Hava Olayları ve Göç İlişkisi</h1>
         <p>Doğu-Güney Afrika ve Batı-Orta Afrika Bölgeleri (2001-2025) — Veri Analitiği
         Dönem Projesi.</p>
@@ -408,13 +411,13 @@ if page == "Genel Bakış":
     st.markdown(
         """
         <div class="intro-box">
-        <div class="intro-title">👋 Proje Amacı</div>
+        <div class="intro-title">👋 Giriş — Proje Kapsamı ve Amacı</div>
         <p>Bu proje, iklim değişkenlerinin (sıcaklık, yağış) ve aşırı hava olaylarının
         (kuraklık, sel, fırtına, aşırı sıcaklık) Doğu-Güney Afrika ve Batı-Orta Afrika
         bölgelerindeki sınır ötesi göç ile ilişkisini incelemektedir. İklim ve afet verileri,
         UNHCR'ın resmi göç istatistikleriyle birleştirilerek hem istatistiksel hipotez
         testleriyle hem de makine öğrenmesi modelleriyle analiz edilmiştir.</p>
-        <p>Literatür taramasında incelenen çalışmalarda, aşırı hava olayı sıklığının
+        <p>Literatür taramasında incelenen 16 çalışmada, aşırı hava olayı sıklığının
         (yalnızca ortalama sıcaklık/yağış değil) çoğu ekonometrik modelde ayrı ayrı
         temsil edilmediği ve nicel/makine öğrenmesi tabanlı çalışmaların sınırlı sayıda
         olduğu görülmüştür.</p>
@@ -444,7 +447,7 @@ if page == "Genel Bakış":
     st.markdown(
         """
         <div class="intro-box">
-        <div class="intro-title">🗺 Bölge Seçimi</div>
+        <div class="intro-title">🗺 Bölge Seçimi — Hangi Bölgeleri, Neden Seçtik?</div>
         <p>UNHCR verisinde 6 farklı bölge bulunuyor: Asya-Pasifik, Amerika, Avrupa,
         Ortadoğu-Kuzey Afrika, Doğu-Güney Afrika ve Batı-Orta Afrika. Biz analizimizi
         <b>Doğu-Güney Afrika</b> ve <b>Batı-Orta Afrika</b> ile sınırlandırdık; çünkü bu iki
@@ -460,7 +463,7 @@ if page == "Genel Bakış":
     st.markdown(
         """
         <div class="intro-box">
-        <div class="intro-title">📦 Veri Kaynakları</div>
+        <div class="intro-title">📦 Veri Kaynakları — Verileri Nereden Aldık, Neden?</div>
         <p>Göç verisi UNHCR'ın yayınladığı ülkeler arası (bilateral) iltica/göç
         istatistiklerinden alındı; çünkü projemiz göçü sınır ötesi hareket olarak
         tanımlıyor, ülke içi yerinden edilmeyi (IDP) kapsam dışında bırakıyor. Afet verisi
@@ -475,7 +478,7 @@ if page == "Genel Bakış":
     st.markdown(
         """
         <div class="intro-box">
-        <div class="intro-title">🧠 Modelleme Yaklaşımı</div>
+        <div class="intro-title">🧠 Modelleme Yaklaşımı — Hangi Modelleri Kullandık, Neden?</div>
         <p>Ekibimiz iki bağımsız modelleme çalışması yürüttü: birincisinde <b>CatBoost</b> ve
         <b>Ridge Regression</b>, ikincisinde <b>Random Forest</b>, <b>Gradient Boosting</b>,
         <b>Decision Tree</b>, <b>KNN</b>, <b>Ridge</b> ve <b>Linear Regression</b>
