@@ -408,17 +408,18 @@ if page == "Genel Bakış":
     st.markdown(
         """
         <div class="intro-box">
-        <div class="intro-title">👋 Giriş — Neden Bu Konuyu Seçtik?</div>
-        <p>İklim değişikliği artık uzak bir gelecek senaryosu değil; kuraklık, sel, fırtına
-        gibi aşırı hava olaylarının sıklığı ve şiddeti dünya genelinde artıyor. Bu olaylar,
-        özellikle ekonomik ve coğrafi açıdan kırılgan bölgelerde insanları yerlerinden
-        ayrılmaya zorlayabiliyor. Literatürde bu ilişkiyi nicel ve makine öğrenmesi
-        yöntemleriyle sistematik test eden çalışmalar hâlâ azınlıkta — biz de bu boşluğa
-        katkı sunmak için bu konuyu seçtik.</p>
-        <p><b>Araştırma Sorumuz:</b> İklim değişkenleri (sıcaklık, yağış) ve aşırı hava
-        olayları (kuraklık, sel, fırtına, aşırı sıcaklık), bu iki bölgedeki sınır ötesi göçü
-        ne ölçüde açıklıyor ve tahmin edilebilir kılıyor? Bunu hem istatistiksel hipotez
-        testleriyle hem de makine öğrenmesi modelleriyle inceledik.</p>
+        <div class="intro-title">👋 Proje Amacı</div>
+        <p>Bu proje, iklim değişkenlerinin (sıcaklık, yağış) ve aşırı hava olaylarının
+        (kuraklık, sel, fırtına, aşırı sıcaklık) Doğu-Güney Afrika ve Batı-Orta Afrika
+        bölgelerindeki sınır ötesi göç ile ilişkisini incelemektedir. İklim ve afet verileri,
+        UNHCR'ın resmi göç istatistikleriyle birleştirilerek hem istatistiksel hipotez
+        testleriyle hem de makine öğrenmesi modelleriyle analiz edilmiştir.</p>
+        <p>Literatür taramasında incelenen 16 çalışmada, aşırı hava olayı sıklığının
+        (yalnızca ortalama sıcaklık/yağış değil) çoğu ekonometrik modelde ayrı ayrı
+        temsil edilmediği ve nicel/makine öğrenmesi tabanlı çalışmaların sınırlı sayıda
+        olduğu görülmüştür.</p>
+        <p><b>Araştırma Sorumuz:</b> İklim değişkenleri ve aşırı hava olayları, bu iki
+        bölgedeki sınır ötesi göçü ne ölçüde açıklıyor ve tahmin edilebilir kılıyor?</p>
         </div>
         """,
         unsafe_allow_html=True,
@@ -443,7 +444,7 @@ if page == "Genel Bakış":
     st.markdown(
         """
         <div class="intro-box">
-        <div class="intro-title">🗺 Bölge Seçimi — Hangi Bölgeleri, Neden Seçtik?</div>
+        <div class="intro-title">🗺 Bölge Seçimi</div>
         <p>UNHCR verisinde 6 farklı bölge bulunuyor: Asya-Pasifik, Amerika, Avrupa,
         Ortadoğu-Kuzey Afrika, Doğu-Güney Afrika ve Batı-Orta Afrika. Biz analizimizi
         <b>Doğu-Güney Afrika</b> ve <b>Batı-Orta Afrika</b> ile sınırlandırdık; çünkü bu iki
@@ -459,7 +460,7 @@ if page == "Genel Bakış":
     st.markdown(
         """
         <div class="intro-box">
-        <div class="intro-title">📦 Veri Kaynakları — Verileri Nereden Aldık, Neden?</div>
+        <div class="intro-title">📦 Veri Kaynakları</div>
         <p>Göç verisi UNHCR'ın yayınladığı ülkeler arası (bilateral) iltica/göç
         istatistiklerinden alındı; çünkü projemiz göçü sınır ötesi hareket olarak
         tanımlıyor, ülke içi yerinden edilmeyi (IDP) kapsam dışında bırakıyor. Afet verisi
@@ -474,7 +475,7 @@ if page == "Genel Bakış":
     st.markdown(
         """
         <div class="intro-box">
-        <div class="intro-title">🧠 Modelleme Yaklaşımı — Hangi Modelleri Kullandık, Neden?</div>
+        <div class="intro-title">🧠 Modelleme Yaklaşımı</div>
         <p>Ekibimiz iki bağımsız modelleme çalışması yürüttü: birincisinde <b>CatBoost</b> ve
         <b>Ridge Regression</b>, ikincisinde <b>Random Forest</b>, <b>Gradient Boosting</b>,
         <b>Decision Tree</b>, <b>KNN</b>, <b>Ridge</b> ve <b>Linear Regression</b>
