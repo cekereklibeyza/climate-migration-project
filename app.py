@@ -413,7 +413,7 @@ if page == "Genel Bakış":
     st.markdown(
         """
         <div class="intro-box">
-        <div class="intro-title">👋 Giriş — Proje Kapsamı ve Amacı</div>
+        <div class="intro-title">Proje Kapsamı</div>
         <p>Bu proje, iklim değişkenlerinin (sıcaklık, yağış) ve aşırı hava olaylarının
         (kuraklık, sel, fırtına, aşırı sıcaklık) Doğu-Güney Afrika ve Batı-Orta Afrika
         bölgelerindeki sınır ötesi göç ile ilişkisini incelemektedir. İklim ve afet verileri,
@@ -433,7 +433,7 @@ if page == "Genel Bakış":
     st.markdown(
         """
         <div class="intro-box">
-        <div class="intro-title">🔥 Küresel Isınma, Aşırı Hava Olayları ve Göç İlişkisi</div>
+        <div class="intro-title">Küresel Isınma, Aşırı Hava Olayları ve Göç İlişkisi</div>
         <p>Küresel ısınma tek bir sonuç değil; kuraklık, sel, fırtına ve aşırı sıcaklık gibi
         birden fazla aşırı hava olayını tetikleyen bir şemsiye kavramdır. Bu olayların her
         biri, insanların yaşam koşullarını farklı şekillerde etkileyerek sınır ötesi göçü
@@ -449,7 +449,7 @@ if page == "Genel Bakış":
     st.markdown(
         """
         <div class="intro-box">
-        <div class="intro-title">🗺 Bölge Seçimi — Hangi Bölgeleri, Neden Seçtik?</div>
+        <div class="intro-title">Bölge Seçimi — Hangi Bölgeleri, Neden Seçtik?</div>
         <p>UNHCR verisinde 6 farklı bölge bulunuyor: Asya-Pasifik, Amerika, Avrupa,
         Ortadoğu-Kuzey Afrika, Doğu-Güney Afrika ve Batı-Orta Afrika. Biz analizimizi
         <b>Doğu-Güney Afrika</b> ve <b>Batı-Orta Afrika</b> ile sınırlandırdık; çünkü bu iki
@@ -465,7 +465,7 @@ if page == "Genel Bakış":
     st.markdown(
         """
         <div class="intro-box">
-        <div class="intro-title">📦 Veri Kaynakları — Verileri Nereden Aldık, Neden?</div>
+        <div class="intro-title">Veri Kaynakları — Verileri Nereden Aldık, Neden?</div>
         <p>Göç verisi UNHCR'ın yayınladığı ülkeler arası (bilateral) iltica/göç
         istatistiklerinden alındı; çünkü projemiz göçü sınır ötesi hareket olarak
         tanımlıyor, ülke içi yerinden edilmeyi (IDP) kapsam dışında bırakıyor. Afet verisi
@@ -480,7 +480,7 @@ if page == "Genel Bakış":
     st.markdown(
         """
         <div class="intro-box">
-        <div class="intro-title">🧠 Modelleme Yaklaşımı — Hangi Modelleri Kullandık, Neden?</div>
+        <div class="intro-title">Modelleme Yaklaşımı — Hangi Modelleri Kullandık, Neden?</div>
         <p>Ekibimiz iki bağımsız modelleme çalışması yürüttü: birincisinde <b>CatBoost</b> ve
         <b>Ridge Regression</b>, ikincisinde <b>Random Forest</b>, <b>Gradient Boosting</b>,
         <b>Decision Tree</b>, <b>KNN</b>, <b>Ridge</b> ve <b>Linear Regression</b>
@@ -497,7 +497,7 @@ if page == "Genel Bakış":
     st.markdown(
         """
         <div class="intro-box">
-        <div class="intro-title">🛠 Projenin Gelişim Süreci</div>
+        <div class="intro-title">Projenin Gelişim Süreci</div>
         <p>Proje; veri temizleme ve birleştirmeyle başladı, keşifsel veri analizi ve hipotez
         testleriyle devam etti, iki bağımsız modelleme çalışmasıyla derinleşti ve
         interaktif bir uygulamayla tamamlandı. Süreç boyunca önemli bir metodolojik
