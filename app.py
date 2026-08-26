@@ -419,7 +419,7 @@ if page == "Genel Bakış":
         bölgelerindeki sınır ötesi göç ile ilişkisini incelemektedir. İklim ve afet verileri,
         UNHCR'ın resmi göç istatistikleriyle birleştirilerek hem istatistiksel hipotez
         testleriyle hem de makine öğrenmesi modelleriyle analiz edilmiştir.</p>
-        <p>Literatür taramasında incelenen 16 çalışmada, aşırı hava olayı sıklığının
+        <p>Literatür taramasında incelenen çalışmada, aşırı hava olayı sıklığının
         (yalnızca ortalama sıcaklık/yağış değil) çoğu ekonometrik modelde ayrı ayrı
         temsil edilmediği ve nicel/makine öğrenmesi tabanlı çalışmaların sınırlı sayıda
         olduğu görülmüştür.</p>
