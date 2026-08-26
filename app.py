@@ -66,7 +66,7 @@ TEAM = [
     ("Dilan Sazan", "Modelleme (CatBoost & Ridge)",
      "Sınır ötesi göç tahmini için ağaç tabanlı ve doğrusal model karşılaştırması; "
      "veri taraması, birleştirme ve literatür taramasına katkı sağladı."),
-    ("Esma Nur Beğbağa", "Modelleme (Random Forest / Gradient Boosting / Decision Tree / KNN / Linear)",
+    ("Esma Nur Beğbağa", "Modelleme (Random Forest / Gradient Boosting / Decision Tree / Linear)",
      "Çoklu model karşılaştırması ve zaman bazlı doğrulama; veri taramasına katkı sağladı."),
     ("Feyza Nur Demirbaş", "Veri Toplama, Veri Temizleme ve Birleştirme",
      "Ham göç, iklim ve afet verilerinin derlenmesi, temizlenmesi ve nihai veri setinin oluşturulması."),
