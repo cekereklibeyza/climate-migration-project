@@ -419,7 +419,7 @@ if page == "Genel Bakış":
         bölgelerindeki sınır ötesi göç ile ilişkisini incelemektedir. İklim ve afet verileri,
         UNHCR'ın resmi göç istatistikleriyle birleştirilerek hem istatistiksel hipotez
         testleriyle hem de makine öğrenmesi modelleriyle analiz edilmiştir.</p>
-        <p>Literatür taramasında incelenen çalışmada, aşırı hava olayı sıklığının
+        <p>Literatür taramasında incelenen çalışmalarda, aşırı hava olayı sıklığının
         (yalnızca ortalama sıcaklık/yağış değil) çoğu ekonometrik modelde ayrı ayrı
         temsil edilmediği ve nicel/makine öğrenmesi tabanlı çalışmaların sınırlı sayıda
         olduğu görülmüştür.</p>
@@ -564,6 +564,20 @@ if page == "Genel Bakış":
         "oluşturulmuştur. Hipotez testleri ve iki bağımsız modelleme çalışması "
         "(CatBoost/Ridge ve Random Forest/Gradient Boosting/Decision Tree/KNN/Linear) "
         "bu veri seti üzerinde yürütülmüştür."
+    )
+
+    st.markdown(
+        """
+        <div class="intro-box" style="border-left-color:#E8A33D;">
+        <div class="intro-title">🌍 Afrika Bağlamı — Literatürden Bir Kanıt</div>
+        <p>Bu konuyu özellikle Afrika bağlamında seçmemizin bir nedeni de literatür:
+        Marchiori, Maystadt ve Schumacher'in 2012 tarihli çalışması, Sahra-altı Afrika'da
+        1960-2000 arasında hava anomalilerinin toplam 5 milyon net yerinden edilmeye yol
+        açtığını gösteriyor. Yani bu bölge, iklim-göç ilişkisinin gerçek hayatta en somut
+        şekilde gözlemlendiği yerlerden biri.</p>
+        </div>
+        """,
+        unsafe_allow_html=True,
     )
 
 # ============================================================
