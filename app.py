@@ -483,7 +483,7 @@ if page == "Genel Bakış":
         <div class="intro-title">Modelleme Yaklaşımı</div>
         <p>Ekibimiz iki bağımsız modelleme çalışması yürüttü: birincisinde <b>CatBoost</b> ve
         <b>Ridge Regression</b>, ikincisinde <b>Random Forest</b>, <b>Gradient Boosting</b>,
-        <b>Decision Tree</b>, <b>KNN</b>, <b>Ridge</b> ve <b>Linear Regression</b>
+        <b>Decision Tree</b>, <b>Ridge</b> ve <b>Linear Regression</b>
         karşılaştırıldı. Amacımız, farklı model ailelerinin aynı veride tutarlı sonuç verip
         vermediğini görmekti. Her iki çalışmada da ağaç tabanlı modeller doğrusal modelleri
         açık farkla geçti; bu, iklim/afet değişkenleri ile göç arasındaki ilişkinin doğrusal
