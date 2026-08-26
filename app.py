@@ -104,8 +104,6 @@ st.markdown(
     }}
     div[data-testid="stImage"] {{
         margin-bottom: 16px;
-        display: flex;
-        justify-content: flex-end;
     }}
     h1, h2, h3 {{
         color: {DEEP_BLUE};
@@ -394,7 +392,9 @@ st.sidebar.caption(
 # SAYFA 1: GENEL BAKIŞ
 # ============================================================
 if page == "Genel Bakış":
-    st.image("assets/logo_softito.png", width=110)
+    _logo_l, _logo_r = st.columns([6, 1])
+    with _logo_r:
+        st.image("assets/logo_softito.png", width=110)
     st.markdown(
         """
         <div class="app-hero">
@@ -570,7 +570,9 @@ if page == "Genel Bakış":
 # SAYFA 2: VERİ GEZGİNİ
 # ============================================================
 elif page == "Veri Gezgini":
-    st.image("assets/logo_softito.png", width=110)
+    _logo_l, _logo_r = st.columns([6, 1])
+    with _logo_r:
+        st.image("assets/logo_softito.png", width=110)
     st.title("🔍 Veri Gezgini")
     st.caption("Ülke ve yıl seçerek birleşik veri setini filtreleyin.")
 
@@ -613,7 +615,9 @@ elif page == "Veri Gezgini":
 # SAYFA 3: EDA & HİPOTEZLER
 # ============================================================
 elif page == "EDA & Hipotezler":
-    st.image("assets/logo_softito.png", width=110)
+    _logo_l, _logo_r = st.columns([6, 1])
+    with _logo_r:
+        st.image("assets/logo_softito.png", width=110)
     st.title("📊 Keşifsel Veri Analizi ve Hipotezler")
 
     tab1, tab2 = st.tabs(["EDA", "Hipotez Testleri"])
@@ -694,7 +698,9 @@ elif page == "EDA & Hipotezler":
 # SAYFA 4: MODELLEME SONUÇLARI
 # ============================================================
 elif page == "Modelleme Sonuçları":
-    st.image("assets/logo_softito.png", width=110)
+    _logo_l, _logo_r = st.columns([6, 1])
+    with _logo_r:
+        st.image("assets/logo_softito.png", width=110)
     st.title("🤖 Modelleme Sonuçları")
     st.caption("Modeller bu sayfa açıldığında 2001-2020 eğitim / 2021-2025 test ayrımıyla canlı olarak eğitilir.")
 
@@ -737,7 +743,9 @@ elif page == "Modelleme Sonuçları":
 # SAYFA 5: CANLI TAHMİN
 # ============================================================
 elif page == "Canlı Tahmin":
-    st.image("assets/logo_softito.png", width=110)
+    _logo_l, _logo_r = st.columns([6, 1])
+    with _logo_r:
+        st.image("assets/logo_softito.png", width=110)
     st.title("🎯 Canlı Göç Tahmini")
     st.caption("İklim/afet değerlerini girin, model o ülke-yıl için tahmini göç sayısını hesaplasın.")
 
@@ -829,7 +837,9 @@ elif page == "Canlı Tahmin":
 # SAYFA 6: SONUÇ VE ÖNERİLER
 # ============================================================
 elif page == "Sonuç ve Öneriler":
-    st.image("assets/logo_softito.png", width=110)
+    _logo_l, _logo_r = st.columns([6, 1])
+    with _logo_r:
+        st.image("assets/logo_softito.png", width=110)
     st.markdown(
         """
         <div class="app-hero">
@@ -897,7 +907,9 @@ elif page == "Sonuç ve Öneriler":
 # SAYFA 7: PROJE EKİBİ
 # ============================================================
 elif page == "Proje Ekibi":
-    st.image("assets/logo_softito.png", width=110)
+    _logo_l, _logo_r = st.columns([6, 1])
+    with _logo_r:
+        st.image("assets/logo_softito.png", width=110)
     st.markdown(
         """
         <div class="app-hero">
