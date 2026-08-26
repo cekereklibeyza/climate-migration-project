@@ -223,6 +223,26 @@ st.markdown(
         margin-bottom: 6px;
         line-height: 1.45;
     }}
+    .intro-box {{
+        background: linear-gradient(135deg, #FFFFFF 0%, {PALE_TEAL} 100%);
+        border: 1px solid {LIGHT_TEAL};
+        border-left: 5px solid {NAVY};
+        border-radius: 14px;
+        padding: 18px 22px;
+        margin-bottom: 18px;
+    }}
+    .intro-box .intro-title {{
+        font-weight: 700;
+        color: {DEEP_BLUE};
+        font-size: 1.05rem;
+        margin-bottom: 8px;
+    }}
+    .intro-box p {{
+        color: {INK};
+        font-size: 0.94rem;
+        line-height: 1.5;
+        margin-bottom: 8px;
+    }}
     </style>
     """,
     unsafe_allow_html=True,
@@ -369,13 +389,35 @@ st.sidebar.caption(
 # SAYFA 1: GENEL BAKIŞ
 # ============================================================
 if page == "Genel Bakış":
+    logo_col, title_col = st.columns([1, 4])
+    with logo_col:
+        st.image("assets/logo_softito.png", use_container_width=True)
+    with title_col:
+        st.markdown(
+            """
+            <div class="app-hero" style="margin-bottom:0;">
+            <h1>Küresel Isınma, Aşırı Hava Olayları ve Göç İlişkisi</h1>
+            <p>Doğu-Güney Afrika ve Batı-Orta Afrika bölgeleri (2001-2025) — veri analitiği
+            dönem projesi.</p>
+            </div>
+            """,
+            unsafe_allow_html=True,
+        )
+
     st.markdown(
         """
-        <div class="app-hero">
-        <h1>Küresel Isınma, Aşırı Hava Olayları ve Göç İlişkisi</h1>
-        <p>İklim/afet değişkenlerinin (sıcaklık, yağış, kuraklık, sel, fırtına, aşırı sıcaklık)
-        <b>Doğu-Güney Afrika</b> ve <b>Batı-Orta Afrika</b> bölgelerindeki <b>sınır ötesi göç</b>
-        ile ilişkisini interaktif olarak keşfedin.</p>
+        <div class="intro-box">
+        <div class="intro-title">\U0001F44B Giriş — Bu neden önemli?</div>
+        <p>İklim değişikliği artık uzak bir gelecek senaryosu değil; kuraklık, sel, fırtına
+        gibi aşırı hava olaylarının sıklığı ve şiddeti dünya genelinde artıyor. Bu olaylar,
+        özellikle ekonomik ve coğrafi açıdan kırılgan bölgelerde insanları yerlerinden
+        ayrılmaya zorlayabiliyor. Literatürde bu ilişkiyi nicel ve makine öğrenmesi
+        yöntemleriyle sistematik test eden çalışmalar hâlâ azınlıkta — biz de bu boşluğa
+        katkı sunmak istedik.</p>
+        <p><b>Araştırma sorumuz:</b> iklim değişkenleri (sıcaklık, yağış) ve aşırı hava
+        olayları (kuraklık, sel, fırtına, aşırı sıcaklık), bu iki bölgedeki sınır ötesi göçü
+        ne ölçüde açıklıyor ve tahmin edilebilir kılıyor? Bunu hem istatistiksel hipotez
+        testleriyle hem de makine öğrenmesi modelleriyle inceledik.</p>
         </div>
         """,
         unsafe_allow_html=True,
@@ -385,6 +427,13 @@ if page == "Genel Bakış":
         "(ülke içi yerinden edilme dahil değildir)."
     )
 
+    c1, c2, c3, c4 = st.columns(4)
+    c1.metric("Ülke sayısı", df["ISO3"].nunique())
+    c2.metric("Yıl aralığı", f"{df['Yil'].min()}-{df['Yil'].max()}")
+    c3.metric("Toplam kayıt", f"{len(df):,}".replace(",", "."))
+    c4.metric("Toplam göç (kümülatif)", f"{int(df['Goc'].sum()):,}".replace(",", "."))
+
+    st.divider()
     st.markdown(
         """
         <div class="finding-box">
@@ -407,12 +456,6 @@ if page == "Genel Bakış":
         """,
         unsafe_allow_html=True,
     )
-
-    c1, c2, c3, c4 = st.columns(4)
-    c1.metric("Ülke sayısı", df["ISO3"].nunique())
-    c2.metric("Yıl aralığı", f"{df['Yil'].min()}-{df['Yil'].max()}")
-    c3.metric("Toplam kayıt", f"{len(df):,}".replace(",", "."))
-    c4.metric("Toplam göç (kümülatif)", f"{int(df['Goc'].sum()):,}".replace(",", "."))
 
     st.divider()
     col1, col2 = st.columns(2)
