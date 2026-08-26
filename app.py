@@ -389,35 +389,13 @@ st.sidebar.caption(
 # SAYFA 1: GENEL BAKIŞ
 # ============================================================
 if page == "Genel Bakış":
-    logo_col, title_col = st.columns([1, 4])
-    with logo_col:
-        st.image("assets/logo_softito.png", use_container_width=True)
-    with title_col:
-        st.markdown(
-            """
-            <div class="app-hero" style="margin-bottom:0;">
-            <h1>Küresel Isınma, Aşırı Hava Olayları ve Göç İlişkisi</h1>
-            <p>Doğu-Güney Afrika ve Batı-Orta Afrika bölgeleri (2001-2025) — veri analitiği
-            dönem projesi.</p>
-            </div>
-            """,
-            unsafe_allow_html=True,
-        )
-
+    st.image("assets/logo_softito.png", width=110)
     st.markdown(
         """
-        <div class="intro-box">
-        <div class="intro-title">\U0001F44B Giriş — Bu neden önemli?</div>
-        <p>İklim değişikliği artık uzak bir gelecek senaryosu değil; kuraklık, sel, fırtına
-        gibi aşırı hava olaylarının sıklığı ve şiddeti dünya genelinde artıyor. Bu olaylar,
-        özellikle ekonomik ve coğrafi açıdan kırılgan bölgelerde insanları yerlerinden
-        ayrılmaya zorlayabiliyor. Literatürde bu ilişkiyi nicel ve makine öğrenmesi
-        yöntemleriyle sistematik test eden çalışmalar hâlâ azınlıkta — biz de bu boşluğa
-        katkı sunmak istedik.</p>
-        <p><b>Araştırma sorumuz:</b> iklim değişkenleri (sıcaklık, yağış) ve aşırı hava
-        olayları (kuraklık, sel, fırtına, aşırı sıcaklık), bu iki bölgedeki sınır ötesi göçü
-        ne ölçüde açıklıyor ve tahmin edilebilir kılıyor? Bunu hem istatistiksel hipotez
-        testleriyle hem de makine öğrenmesi modelleriyle inceledik.</p>
+        <div class="app-hero" style="margin-top:-8px;">
+        <h1>Küresel Isınma, Aşırı Hava Olayları ve Göç İlişkisi</h1>
+        <p>Doğu-Güney Afrika ve Batı-Orta Afrika Bölgeleri (2001-2025) — Veri Analitiği
+        Dönem Projesi.</p>
         </div>
         """,
         unsafe_allow_html=True,
@@ -427,28 +405,127 @@ if page == "Genel Bakış":
         "(ülke içi yerinden edilme dahil değildir)."
     )
 
+    st.markdown(
+        """
+        <div class="intro-box">
+        <div class="intro-title">👋 Giriş — Neden Bu Konuyu Seçtik?</div>
+        <p>İklim değişikliği artık uzak bir gelecek senaryosu değil; kuraklık, sel, fırtına
+        gibi aşırı hava olaylarının sıklığı ve şiddeti dünya genelinde artıyor. Bu olaylar,
+        özellikle ekonomik ve coğrafi açıdan kırılgan bölgelerde insanları yerlerinden
+        ayrılmaya zorlayabiliyor. Literatürde bu ilişkiyi nicel ve makine öğrenmesi
+        yöntemleriyle sistematik test eden çalışmalar hâlâ azınlıkta — biz de bu boşluğa
+        katkı sunmak için bu konuyu seçtik.</p>
+        <p><b>Araştırma Sorumuz:</b> İklim değişkenleri (sıcaklık, yağış) ve aşırı hava
+        olayları (kuraklık, sel, fırtına, aşırı sıcaklık), bu iki bölgedeki sınır ötesi göçü
+        ne ölçüde açıklıyor ve tahmin edilebilir kılıyor? Bunu hem istatistiksel hipotez
+        testleriyle hem de makine öğrenmesi modelleriyle inceledik.</p>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+
+    st.markdown(
+        """
+        <div class="intro-box">
+        <div class="intro-title">🔥 Küresel Isınma, Aşırı Hava Olayları ve Göç İlişkisi</div>
+        <p>Küresel ısınma tek bir sonuç değil; kuraklık, sel, fırtına ve aşırı sıcaklık gibi
+        birden fazla aşırı hava olayını tetikleyen bir şemsiye kavramdır. Bu olayların her
+        biri, insanların yaşam koşullarını farklı şekillerde etkileyerek sınır ötesi göçü
+        tetikleyebilir. Projemizde küresel ısınmayı doğrudan değil, onun somut göstergeleri
+        olan ortalama sıcaklık, ortalama yağış ve dört afet türünün sıklığı üzerinden
+        inceledik; bu değişkenlerin göçle ilişkisini hem istatistiksel hem de makine
+        öğrenmesi yöntemleriyle test ettik.</p>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+
+    st.markdown(
+        """
+        <div class="intro-box">
+        <div class="intro-title">🗺 Bölge Seçimi — Hangi Bölgeleri, Neden Seçtik?</div>
+        <p>UNHCR verisinde 6 farklı bölge bulunuyor: Asya-Pasifik, Amerika, Avrupa,
+        Ortadoğu-Kuzey Afrika, Doğu-Güney Afrika ve Batı-Orta Afrika. Biz analizimizi
+        <b>Doğu-Güney Afrika</b> ve <b>Batı-Orta Afrika</b> ile sınırlandırdık; çünkü bu iki
+        bölge iklim değişikliğine coğrafi ve ekonomik açıdan yüksek kırılganlık gösteriyor,
+        göç verisinde yeterli çeşitlilik sunuyor, veri tek bir kriz ülkesine yığılmamış
+        durumda ve 2001-2025 arası verisi eksiksiz. Diğer dört bölge, zaman ve kapsam
+        kısıtları nedeniyle bu çalışmanın dışında bırakıldı.</p>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+
+    st.markdown(
+        """
+        <div class="intro-box">
+        <div class="intro-title">📦 Veri Kaynakları — Verileri Nereden Aldık, Neden?</div>
+        <p>Göç verisi UNHCR'ın yayınladığı ülkeler arası (bilateral) iltica/göç
+        istatistiklerinden alındı; çünkü projemiz göçü sınır ötesi hareket olarak
+        tanımlıyor, ülke içi yerinden edilmeyi (IDP) kapsam dışında bırakıyor. Afet verisi
+        EM-DAT (The International Disaster Database) kaynağından geldi; iklim verisi ise
+        ülke-yıl bazında ortalama sıcaklık ve yağış kayıtlarını içeriyor. Bu üç kaynağı
+        birleştirerek 1.190 satırlık ortak bir veri seti oluşturduk.</p>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+
+    st.markdown(
+        """
+        <div class="intro-box">
+        <div class="intro-title">🧠 Modelleme Yaklaşımı — Hangi Modelleri Kullandık, Neden?</div>
+        <p>Ekibimiz iki bağımsız modelleme çalışması yürüttü: birincisinde <b>CatBoost</b> ve
+        <b>Ridge Regression</b>, ikincisinde <b>Random Forest</b>, <b>Gradient Boosting</b>,
+        <b>Decision Tree</b>, <b>KNN</b>, <b>Ridge</b> ve <b>Linear Regression</b>
+        karşılaştırıldı. Amacımız, farklı model ailelerinin aynı veride tutarlı sonuç verip
+        vermediğini görmekti. Derin öğrenme (sinir ağları) gibi daha karmaşık yöntemleri,
+        veri setimizin görece küçük olması (1.190 satır) nedeniyle bilinçli olarak
+        kullanmadık; bu ölçekte klasik makine öğrenmesi modelleri daha güvenilir sonuç
+        veriyor.</p>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+
+    st.markdown(
+        """
+        <div class="intro-box">
+        <div class="intro-title">🛠 Projenin Gelişim Süreci</div>
+        <p>Proje; veri temizleme ve birleştirmeyle başladı, keşifsel veri analizi ve hipotez
+        testleriyle devam etti, iki bağımsız modelleme çalışmasıyla derinleşti ve
+        interaktif bir uygulamayla tamamlandı. Süreç boyunca önemli bir metodolojik
+        düzeltme de yaptık: ilk modelleme denemesinde rastgele train/test ayrımının veri
+        sızıntısına yol açtığını fark edip, zaman bazlı bir ayrıma geçtik — bu, sonuçlarımızın
+        güvenilirliğini önemli ölçüde artırdı.</p>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+
+    st.divider()
     c1, c2, c3, c4 = st.columns(4)
-    c1.metric("Ülke sayısı", df["ISO3"].nunique())
-    c2.metric("Yıl aralığı", f"{df['Yil'].min()}-{df['Yil'].max()}")
-    c3.metric("Toplam kayıt", f"{len(df):,}".replace(",", "."))
-    c4.metric("Toplam göç (kümülatif)", f"{int(df['Goc'].sum()):,}".replace(",", "."))
+    c1.metric("Ülke Sayısı", df["ISO3"].nunique())
+    c2.metric("Yıl Aralığı", f"{df['Yil'].min()}-{df['Yil'].max()}")
+    c3.metric("Toplam Kayıt", f"{len(df):,}".replace(",", "."))
+    c4.metric("Toplam Göç (Kümülatif)", f"{int(df['Goc'].sum()):,}".replace(",", "."))
 
     st.divider()
     st.markdown(
         """
         <div class="finding-box">
-        <div class="finding-title">\U0001F4CC Öne Çıkan Bulgular</div>
+        <div class="finding-title">📌 Öne Çıkan Bulgular</div>
         <ul>
-            <li><b>Sel, kuraklıktan daha güçlü bir göç belirleyicisi:</b> Sel sayısı ile göç
+            <li><b>Sel, Kuraklıktan Daha Güçlü Bir Göç Belirleyicisi:</b> Sel sayısı ile göç
             arasındaki ilişki (Spearman r ≈ 0.33), kuraklığın ilişkisinden (r ≈ 0.01) belirgin
             şekilde daha güçlü.</li>
-            <li><b>Kuraklığın etkisi dolaylı:</b> Kuraklık göçü doğrudan artırmıyor, etkilenen
+            <li><b>Kuraklığın Etkisi Dolaylı:</b> Kuraklık göçü doğrudan artırmıyor, etkilenen
             nüfusu artırıyor; bu da sınır ötesi göçe ancak zayıf biçimde yansıyor
             ("hapsolmuş nüfus" etkisi).</li>
-            <li><b>Çok değişkenli model, tek değişkenliden çok daha güçlü:</b> Sadece kuraklıkla
+            <li><b>Çok Değişkenli Model, Tek Değişkenliden Çok Daha Güçlü:</b> Sadece kuraklıkla
             açıklanan varyans ~%0 iken, 6 iklim/afet değişkeninin birlikte kullanılması açıklama
             gücünü ~%18'e çıkarıyor.</li>
-            <li><b>En iyi modeller göçü yüksek doğrulukla tahmin ediyor:</b> Random Forest ve
+            <li><b>En İyi Modeller Göçü Yüksek Doğrulukla Tahmin Ediyor:</b> Random Forest ve
             CatBoost gibi ağaç tabanlı modeller, test setinde R² = 0.56-0.72 arası performans
             gösteriyor.</li>
         </ul>
@@ -460,13 +537,13 @@ if page == "Genel Bakış":
     st.divider()
     col1, col2 = st.columns(2)
     with col1:
-        st.subheader("Yıllara göre toplam göç")
+        st.subheader("Yıllara Göre Toplam Göç")
         yearly = df.groupby("Yil", as_index=False)["Goc"].sum()
         fig = px.area(yearly, x="Yil", y="Goc", color_discrete_sequence=[TEAL])
         fig.update_traces(line=dict(color=DEEP_BLUE, width=2), fillcolor="rgba(31,138,140,0.25)")
         st.plotly_chart(style_fig(fig), use_container_width=True)
     with col2:
-        st.subheader("En çok göç veren 10 ülke (toplam)")
+        st.subheader("En Çok Göç Veren 10 Ülke (Toplam)")
         top10 = df.groupby("Ulke", as_index=False)["Goc"].sum().sort_values("Goc", ascending=False).head(10)
         top10 = top10.sort_values("Goc")
         fig = px.bar(top10, x="Goc", y="Ulke", orientation="h", color="Goc",
@@ -476,7 +553,7 @@ if page == "Genel Bakış":
 
     st.divider()
     st.markdown(
-        "**Metodoloji özeti:** Bilateral göç verisi (43.162 satır) ülke-yıl bazında "
+        "**Metodoloji Özeti:** Bilateral göç verisi (43.162 satır) ülke-yıl bazında "
         "toplanıp iklim/afet tablosuyla birleştirilerek 1.190 satırlık nihai veri seti "
         "oluşturulmuştur. Hipotez testleri ve iki bağımsız modelleme çalışması "
         "(CatBoost/Ridge ve Random Forest/Gradient Boosting/Decision Tree/KNN/Linear) "
@@ -487,7 +564,7 @@ if page == "Genel Bakış":
 # SAYFA 2: VERİ GEZGİNİ
 # ============================================================
 elif page == "Veri Gezgini":
-    st.title("\U0001F50D Veri Gezgini")
+    st.title("🔍 Veri Gezgini")
     st.caption("Ülke ve yıl seçerek birleşik veri setini filtreleyin.")
 
     ulkeler = sorted(df["Ulke"].unique())
@@ -529,7 +606,7 @@ elif page == "Veri Gezgini":
 # SAYFA 3: EDA & HİPOTEZLER
 # ============================================================
 elif page == "EDA & Hipotezler":
-    st.title("\U0001F4CA Keşifsel Veri Analizi ve Hipotezler")
+    st.title("📊 Keşifsel Veri Analizi ve Hipotezler")
 
     tab1, tab2 = st.tabs(["EDA", "Hipotez Testleri"])
 
@@ -609,7 +686,7 @@ elif page == "EDA & Hipotezler":
 # SAYFA 4: MODELLEME SONUÇLARI
 # ============================================================
 elif page == "Modelleme Sonuçları":
-    st.title("\U0001F916 Modelleme Sonuçları")
+    st.title("🤖 Modelleme Sonuçları")
     st.caption("Modeller bu sayfa açıldığında 2001-2020 eğitim / 2021-2025 test ayrımıyla canlı olarak eğitilir.")
 
     st.subheader("Model karşılaştırması (canlı eğitim, bu veri seti üzerinde)")
@@ -651,7 +728,7 @@ elif page == "Modelleme Sonuçları":
 # SAYFA 5: CANLI TAHMİN
 # ============================================================
 elif page == "Canlı Tahmin":
-    st.title("\U0001F3AF Canlı Göç Tahmini")
+    st.title("🎯 Canlı Göç Tahmini")
     st.caption("İklim/afet değerlerini girin, model o ülke-yıl için tahmini göç sayısını hesaplasın.")
 
     model_secenekleri = [n for n in fitted_models.keys()]
@@ -702,7 +779,7 @@ elif page == "Canlı Tahmin":
         )
 
         st.divider()
-        st.subheader("\U0001F4CF Model Kıyası")
+        st.subheader("📏 Model Kıyası")
         st.caption("Aynı girdi değerleri için tüm modellerin tahminleri.")
 
         kiyas_satirlari = []
@@ -745,7 +822,7 @@ elif page == "Sonuç ve Öneriler":
     st.markdown(
         """
         <div class="app-hero">
-        <h1>\U0001F4CB Sonuç ve Öneriler</h1>
+        <h1>📋 Sonuç ve Öneriler</h1>
         <p>Hipotez ve modelleme bulgularının özeti, pratik öneriler ve veri kaynakları.</p>
         </div>
         """,
@@ -794,7 +871,7 @@ elif page == "Sonuç ve Öneriler":
     )
 
     st.divider()
-    st.subheader("\U0001F4DA Kaynakça / Veri Kaynakları")
+    st.subheader("📚 Kaynakça / Veri Kaynakları")
     st.markdown(
         "- **Göç verisi:** UNHCR (United Nations High Commissioner for Refugees) - ülkeler "
         "arası (bilateral) iltica/göç istatistikleri, 2001-2025.\n"
@@ -812,7 +889,7 @@ elif page == "Proje Ekibi":
     st.markdown(
         """
         <div class="app-hero">
-        <h1>\U0001F465 Proje Ekibi</h1>
+        <h1>👥 Proje Ekibi</h1>
         <p>Bu projeyi birlikte hazırlayan 6 kişilik ekip ve görev dağılımı.</p>
         </div>
         """,
